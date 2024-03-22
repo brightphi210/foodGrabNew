@@ -56,29 +56,21 @@ const orderPage = () => {
     const route = useRoute();
     const { cuisines } : any = route.params;
 
-    const [cartItems, setCartItems] = useState<any[]>([]); // Explicitly define cartItems as an array
+    const [cartItems, setCartItems] = useState<any>([]);
 
     const addItemToCart = async (cuisine: any) => {
-      try {
-        // Prevent duplicate items (optional):
-        const existingItem = cartItems.find((item) => item.id === cuisine.id); // Check for unique identifier (replace with appropriate property)
-        if (existingItem) {
-          console.warn('Item already exists in cart:', cuisine.name);
-          return;
+        try {
+          const item = { cuisine };
+          const updatedCartItems = [...cartItems, item];
+          setCartItems(updatedCartItems);
+          await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+        } catch (error) {
+          console.error('Error adding item to cart:', error);
         }
-    
-        const newItem = { ...cuisine }; 
-        const updatedCartItems = [...cartItems, newItem];
-        setCartItems(updatedCartItems);
-        console.log('cart added successfully')
-    
-        await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-      } catch (error) {
-        console.error('Error adding item to cart:', error);
-      }
-    };
-    
-    console.log(cuisines); 
+    }
+
+
+    console.log(cuisines)
 
 
   return (

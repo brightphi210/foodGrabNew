@@ -67,7 +67,7 @@ const index = () => {
         <DashHeader />
         <StatusBar style='dark'/>
 
-        <View style={{position : 'relative', paddingTop : 10, paddingBottom : 0}}>
+        <View style={{position : 'relative', paddingTop : 10, paddingBottom : 2}}>
           <Ionicons name='search' size={15} style={{position : 'absolute', top : 25, left : 15}}/>
           <TextInput placeholder='Search for your favourite food' style={styles.inputStyles}/>
           <Ionicons name='filter' size={15} style={{position : 'absolute', top : 25, right :15}}/>
