@@ -28,6 +28,7 @@ const MainLayout = () => {
     const inApp = segments[0] == '/(protected)'
 
     if(isAuthenticated && !inApp ){
+      // router.replace('/authRoute/home_dash')
       router.replace('/home')
     }else if(isAuthenticated == false ){
       router.replace('/login')

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 import { Text, TouchableOpacity } from 'react-native';
@@ -7,8 +6,27 @@ import Colors from '@/constants/Colors';
 import { View, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import React, { useState, useEffect } from 'react'
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TabLayout() {
+
+  const [cartItems, setCartItems] = useState([])
+
+  const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('cuisines');
+        return setCartItems(jsonValue != null ? JSON.parse(jsonValue) : null);
+      } catch (e) {
+        console.log(e)
+      }
+  };
+
+  useEffect(() => {
+      getData();
+  },[]);
+
 
   const [loaded, error] = useFonts({
     SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
@@ -49,7 +67,6 @@ export default function TabLayout() {
                 name="home-outline"
                 color={focused ? Colors.myGreen : 'gray'}
               />
-              <Text style={{color : focused ? Colors.myGreen : 'gray', marginLeft : 0, fontFamily : 'Railway1', fontSize : 12}}>Home</Text>
             </View>
           ),
         }}
@@ -69,14 +86,21 @@ export default function TabLayout() {
           },
           title: "",
           tabBarIcon: ({ focused }) => (
-            <View>
+            <View style={{position : 'relative'}}>
+
+              {cartItems === null ? '' : (
+                  <FontAwesome name='circle' 
+                  size={6} color={'red'} 
+                  style={{position : 'absolute', right : -5, top : 2,}}
+                />
+              )}
+
               <Ionicons
-                size={focused ? 25 : 20}
+                size={focused ? 25 : 25}
                 style={{ marginBottom: -3, textAlign : 'center' }}
-                name="cart-outline"
+                name="basket-outline"
                 color={focused ? Colors.myGreen : 'gray'}
               />
-              <Text style={{color : focused ? Colors.myGreen : 'gray', marginLeft : 0, fontFamily : 'Railway1', fontSize : 12}}>Cart</Text>
             </View>
           ),
         }}
@@ -94,14 +118,13 @@ export default function TabLayout() {
           },
           title: "",
           tabBarIcon: ({ focused }) => (
-            <View>
+            <View >
               <Ionicons
                 size={focused ? 25 : 20}
                 style={{ marginBottom: -3, textAlign : 'center' }}
                 name="bag-outline"
                 color={focused ? Colors.myGreen : 'gray'}
               />
-              <Text style={{color : focused ? Colors.myGreen : 'gray', marginLeft : 0, fontFamily : 'Railway1', fontSize : 12, textAlign : 'center'}}>Order</Text>
             </View>
           ),
         }}
@@ -121,13 +144,12 @@ export default function TabLayout() {
           title: "",
           tabBarIcon: ({ focused }) => (
             <View>
-              <Ionicons
+              <FontAwesome
                 size={focused ? 25 : 20}
                 style={{ marginBottom: -3, textAlign : 'center' }}
-                name="person-outline"
+                name="user-circle"
                 color={focused ? Colors.myGreen : 'gray'}
               />
-              <Text style={{color : focused ? Colors.myGreen : 'gray', marginLeft : 0, fontFamily : 'Railway1', fontSize : 12, textAlign : 'center'}}>Account</Text>
             </View>
           ),
         }}

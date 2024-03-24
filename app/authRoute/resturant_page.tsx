@@ -9,13 +9,13 @@ import { useRoute } from '@react-navigation/native';
 import { ActivityIndicator } from 'react-native';
 import BackHeader from '@/components/BackHeader';
 import { useNavigation } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
 
 const resturantPage = () => {
 
     const route = useRoute();
     const { shopId } : any = route.params;
 
-    // alert(shopId)
 
 
     const [singleShopData, setSingleShopData] = useState<any>({})
@@ -24,8 +24,6 @@ const resturantPage = () => {
     const { userToken } = useContext(AuthContext)
 
     const [isLoading, setIsLoading] = useState(false)
-
-    // setCuisines(singleShopData.cuisines)
 
 
   const fetchData = async () => {
@@ -40,9 +38,11 @@ const resturantPage = () => {
         },
       });
       const myData = await res.json();
+
+      console.log(myData)
       setIsLoading(false);
 
-    //   setIsLoading(true);
+      // setIsLoading(true);
       setSingleShopData(myData.data);
       setCuisines(myData.data.cuisines)
 
@@ -60,7 +60,6 @@ const resturantPage = () => {
 
 
 
-//   console.log(singleShopData.cuisines) 
 
   const navigate = useNavigation()
 
@@ -69,105 +68,103 @@ const resturantPage = () => {
   };
  
 
-
   return (
     <View style={styles.container}>
 
         <BackHeader />
+        <StatusBar style='dark'/>
 
-        {isLoading && <ActivityIndicator size={'large'} style={{flex : 1, justifyContent : 'center', alignItems : 'center'}}/>}
-
+        {isLoading  && <ActivityIndicator size={'large'} style={{flex : 1, justifyContent : 'center', alignItems : 'center'}}/>}
         <View>
-            <View style={{display : 'flex', flexDirection : 'row', paddingBottom : 10}}>
-                <Text style={{ fontFamily : 'Railway2', fontSize : 17, }}>{singleShopData.shopName}</Text>
-                <Text style={{marginLeft : 'auto', fontFamily : 'Railway1'}}>Open till 06:300 pm</Text>
-            </View>
-            <Image source={require('../../assets/images/rest1.png')}
-                resizeMode='cover'
-                style={{width : '100%', height : 100,
-                borderRadius : 5
-            }}
-            />
+              <View style={{display : 'flex', flexDirection : 'row', paddingBottom : 10}}>
+                  <Text style={{ fontFamily : 'Railway2', fontSize : 17, }}>{singleShopData.shopName}</Text>
+                  <Text style={{marginLeft : 'auto', fontFamily : 'Railway1'}}>Open till 06:300 pm</Text>
+              </View>
+              <Image source={require('../../assets/images/rest1.png')}
+                  resizeMode='cover'
+                  style={{width : '100%', height : 100,
+                  borderRadius : 5
+              }}
+              />
 
 
-            <View style={{display :'flex', 
-                flexDirection : 'row', 
-                justifyContent : 'space-between', 
-                width : '100%',
-                paddingTop : 10,
-                borderBottomColor : Colors.myGray,
-                borderBottomWidth : 1,
-                paddingBottom : 10,
-            }}>
-                <View style={{borderRightColor : Colors.myGray, borderRightWidth : 1, paddingRight : 20}}>
-                    <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Preparation Time</Text>
-                    <Text style={{fontFamily : 'Railway3', }}>5-20 minutes</Text>
-                </View>
+              <View style={{display :'flex', 
+                  flexDirection : 'row', 
+                  justifyContent : 'space-between', 
+                  width : '100%',
+                  paddingTop : 10,
+                  borderBottomColor : Colors.myGray,
+                  borderBottomWidth : 1,
+                  paddingBottom : 10,
+              }}>
+                  <View style={{borderRightColor : Colors.myGray, borderRightWidth : 1, paddingRight : 20}}>
+                      <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Preparation Time</Text>
+                      <Text style={{fontFamily : 'Railway3', }}>5-20 minutes</Text>
+                  </View>
 
-                <View style={{borderRightColor : Colors.myGray, borderRightWidth : 1, paddingRight : 20}}>
-                    <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Delivery Type</Text>
-                    <Text style={{fontFamily : 'Railway3', }}>Instant Delivery</Text>
-                </View>
+                  <View style={{borderRightColor : Colors.myGray, borderRightWidth : 1, paddingRight : 20}}>
+                      <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Delivery Type</Text>
+                      <Text style={{fontFamily : 'Railway3', }}>Instant Delivery</Text>
+                  </View>
 
-                <View style={{}}>
-                    <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Rating</Text>
-                    <Text style={{fontFamily : 'Railway3', }}>5.0 (123)</Text>
-                </View>
-            </View>
+                  <View style={{}}>
+                      <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Rating</Text>
+                      <Text style={{fontFamily : 'Railway3', }}>5.0 (123)</Text>
+                  </View>
+              </View>
 
-            <View style={{display : 'flex', flexDirection :'row', paddingVertical : 20, gap : 10}}>
+              <View style={{display : 'flex', flexDirection :'row', paddingVertical : 20, gap : 10}}>
 
-                <TouchableOpacity style={styles.btnStyle}>
-                    <Text style={styles.btnText}>All</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity style={styles.btnStyle}>
+                      <Text style={styles.btnText}>All</Text>
+                  </TouchableOpacity>
 
 
-                <TouchableOpacity style={styles.btnStyle1}>
-                    <Text style={styles.btnText1}>What’s New</Text>
-                </TouchableOpacity>
+                  <TouchableOpacity style={styles.btnStyle1}>
+                      <Text style={styles.btnText1}>What’s New</Text>
+                  </TouchableOpacity>
 
-            </View>
+              </View>
 
-            <ScrollView style={{paddingVertical : 10, height : '60%'}} showsVerticalScrollIndicator ={false}>
-                {/* <Link href={'/authRoute/order_page'} asChild>  */}
+              <ScrollView style={{paddingVertical : 10, height : '60%'}} showsVerticalScrollIndicator ={false}>
 
-                    {cuisines.map((eachCuisines:any, index:any)=>(
-                    <TouchableOpacity key={index} onPress={() => handleProductPress(eachCuisines)}>
-                    <View style={{display : 'flex', 
-                        flexDirection : 'row', gap : 10, 
-                        justifyContent : 'center', 
-                        alignItems : 'center', 
-                        borderBottomColor : Colors.myGray,
-                        borderBottomWidth : 1,
-                        paddingBottom : 15,
-                        marginBottom : 15,
-                    }}>
+                      {cuisines.map((eachCuisines:any, index:any)=>(
+                      <TouchableOpacity key={index} onPress={() => handleProductPress(eachCuisines)}>
+                      <View style={{display : 'flex', 
+                          flexDirection : 'row', gap : 10, 
+                          justifyContent : 'center', 
+                          alignItems : 'center', 
+                          borderBottomColor : Colors.myGray,
+                          borderBottomWidth : 1,
+                          paddingBottom : 15,
+                          marginBottom : 15,
+                      }}>
 
-                        <Image source={require('../../assets/images/imgFood4.png')}
-                        style={{width : 70, height : 70, borderRadius : 5}}
-                        />
+                          <Image source={require('../../assets/images/imgFood4.png')}
+                          style={{width : 70, height : 70, borderRadius : 5}}
+                          />
 
-                        <View style={{width : '75%'}}>
-                        <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
-                            <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{eachCuisines.name}</Text>
-                        </View>
+                          <View style={{width : '75%'}}>
+                          <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
+                              <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{eachCuisines.name}</Text>
+                          </View>
 
-                        <Text style={{fontFamily : 'Railway1', 
-                            fontSize : 12, color : 'gray', paddingVertical : 5,
-                            textAlign : 'justify'
-                        }}>
-                            {eachCuisines.description}
-                        </Text>
-                        <Text style={{fontFamily : 'Railway1', color : Colors.btnGreen}}>From N{eachCuisines.price}</Text>
-                        </View>
+                          <Text style={{fontFamily : 'Railway1', 
+                              fontSize : 12, color : 'gray', paddingVertical : 5,
+                              textAlign : 'justify'
+                          }}>
+                              {eachCuisines.description}
+                          </Text>
+                          <Text style={{fontFamily : 'Railway1', color : Colors.btnGreen}}>From N{eachCuisines.price}</Text>
+                          </View>
 
-                    </View>
-                    </TouchableOpacity>
-                    ))}
-                {/* </Link> */}
-                           
-            </ScrollView>
-        </View>
+                      </View>
+                      </TouchableOpacity>
+                      ))}
+                            
+              </ScrollView>
+          </View>
+
     </View>
   )
 }

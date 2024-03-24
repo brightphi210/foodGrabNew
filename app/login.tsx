@@ -11,6 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ActivityIndicator } from 'react-native';
 import { AuthContext } from '@/context/AuthContext';
 import { useContext } from 'react';
+import { StatusBar } from 'expo-status-bar';
 const register = () => {
 
     const {userToken} :any = useContext(AuthContext);
@@ -79,6 +80,7 @@ const register = () => {
 
   return (
     <SafeAreaView style={{flex : 1, backgroundColor : Colors.myRed}}>
+        <StatusBar style='light'/>
       <View style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
             <Text style={{fontFamily : 'Railway2', fontSize : 25}}>Login</Text>

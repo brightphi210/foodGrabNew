@@ -10,6 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AuthContext } from '@/context/AuthContext';
 import { BASE_URL } from '@/Enpoints/Endpoint';
 import DashHeader from '@/components/DashHeader';
+// import SkeletonLoading from 'react-native-skeleton-loading'
 
 
 const index = () => {
@@ -29,7 +30,7 @@ const index = () => {
     setShow(true);
   }
 
-  const [shopData, setShopData] = useState([])
+  const [shopData, setShopData] = useState<any>([])
 
   const fetchData = async () => {
     setIsLoading(true)
@@ -58,7 +59,7 @@ const index = () => {
   
 
   const handleProductPress = (shopId : any) => {
-    navigate.navigate('authRoute/resturant_page', { shopId })
+    navigate.navigate('authRoute/resturant_page', {shopId})
   };
 
 
@@ -206,7 +207,6 @@ const index = () => {
                 </View>
               </TouchableOpacity>
 
-
               <TouchableOpacity>
                 <View style={{display : 'flex', 
                   flexDirection : 'row', gap : 10, 
@@ -246,10 +246,16 @@ const index = () => {
               <Text style={{fontFamily : 'Railway3', fontSize : 15, paddingBottom : 10}}>Available Restaurants</Text>
               <View>
 
-                  {shopData == null || shopData == undefined || shopData == '' ? <ActivityIndicator style={{paddingTop : 100}} size={'large'}/> : (
+ 
+
+                  {shopData == null || shopData == undefined || shopData == '' ? 
+                  
+                  (<ActivityIndicator style={{paddingTop : 100}} size={'large'}/> )
+
+                  : (
 
                     <>
-                      {shopData.map((item : any, index) => (
+                      {shopData.map((item : any, index:any) => (
                         
                         <TouchableOpacity style={styles.restImageDiv} key={index} onPress={() => handleProductPress(item._id)}>
                           

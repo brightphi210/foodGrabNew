@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity, } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Ionicons from '@expo/vector-icons/Ionicons';
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import Colors from '@/constants/Colors';
 import BackHeader from '@/components/BackHeader';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
 const orderPage = () => {
 
   
@@ -53,30 +54,45 @@ const orderPage = () => {
     }
 
 
+
+    const router = useRouter()
+
     const route = useRoute();
     const { cuisines } : any = route.params;
 
-    const [cartItems, setCartItems] = useState<any>([]);
-
-    const addItemToCart = async (cuisine: any) => {
+    const addToCart = async () => {
         try {
-          const item = { cuisine };
-          const updatedCartItems = [...cartItems, item];
-          setCartItems(updatedCartItems);
-          await AsyncStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+          const existingCart = await AsyncStorage.getItem('cuisines');
+          let updatedCart = [];
+    
+          if (existingCart !== null) {
+            updatedCart = JSON.parse(existingCart);
+          }
+    
+          updatedCart.push({ cuisines });
+    
+          await AsyncStorage.setItem('cuisines', JSON.stringify(updatedCart));
+
+          router.replace('/(protected)/carts')
+
+    
+          alert('Item added to cart!');
+
+          console.log(existingCart);
+          console.log(existingCart?.length)
         } catch (error) {
           console.error('Error adding item to cart:', error);
         }
-    }
+    };
 
 
-    console.log(cuisines)
 
 
   return (
     <View style={styles.container}>
         <BackHeader />
         <View>
+
             <Text style={{fontFamily : 'Railway2', fontSize : 20, paddingBottom : 10}}>{cuisines.name}</Text>
             <Image source={require('../../assets/images/combo1.png')}
                 resizeMode='cover' style={{width:'100%', height:100, borderRadius : 5,}}
@@ -206,7 +222,7 @@ const orderPage = () => {
 
             </View>
 
-            <TouchableOpacity style={styles.btnStyles} onPress={addItemToCart}>
+            <TouchableOpacity style={styles.btnStyles} onPress={addToCart}>
                 <Text style={{color : 'white', fontSize : 15, fontFamily : 'Railway3'}}>Add N{cuisines.price}</Text>
             </TouchableOpacity>
         </View>

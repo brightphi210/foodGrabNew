@@ -1,19 +1,81 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView } from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
+import React, { useState, useEffect } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Colors from '@/constants/Colors';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link } from 'expo-router'
+import { Link, useRouter } from 'expo-router'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { StatusBar } from 'expo-status-bar';
 
 const cart = () => {
 
-  const [addedItems, setAddedItems] = useState(false)
+      const [cartItems, setCartItems] = useState([])
+
+      const router = useRouter();
+
+    const getData = async () => {
+        try {
+          const jsonValue = await AsyncStorage.getItem('cuisines');
+          return setCartItems(jsonValue != null ? JSON.parse(jsonValue) : null);
+        } catch (e) {
+          console.log(e)
+        }
+    };
+
+    useEffect(() => {
+        getData();
+    },[]);
+
+
+    const deleteAll = () => {
+      AsyncStorage.removeItem('cuisines');
+      router.replace('/(protected)/carts')
+    };
+
+
+
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={{paddingLeft : 20, fontFamily : 'Railway2', paddingTop : 30, fontSize : 20}}>My Cart</Text>
+      <StatusBar style='dark'/>
 
-      {addedItems ? (
+      <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
+        <Text style={{paddingLeft : 20, fontFamily : 'Railway2', paddingTop : 30, fontSize : 20}}>My Cart</Text>
+
+        {cartItems === null ? (
+          <View style={{
+            backgroundColor : Colors.myGray, 
+            marginLeft : 'auto', marginTop : 30, 
+            marginRight : 20, display : 'flex', flexDirection : 'column',
+            justifyContent : 'center',
+            alignItems : 'center',
+            paddingHorizontal : 8,
+            paddingVertical : 5,
+            borderRadius : 100,
+            paddingTop : 0
+
+          }}>
+            <Text style={{ fontFamily : 'Railway1',  fontSize : 15, }}>0</Text>
+          </View>
+          
+        ) : (
+          <View style={{
+            backgroundColor : Colors.myGray, 
+            marginLeft : 'auto', marginTop : 30, 
+            marginRight : 20, display : 'flex', flexDirection : 'column',
+            justifyContent : 'center',
+            alignItems : 'center',
+            paddingHorizontal : 8,
+            paddingVertical : 5,
+            borderRadius : 100,
+            paddingTop : 0
+
+          }}>
+            <Text style={{ fontFamily : 'Railway1',  fontSize : 15, }}>{cartItems.length}</Text>
+          </View>
+        )}
+      </View>
+
+      {cartItems === null ? (
 
         <View style={styles.container2}>
 
@@ -24,7 +86,7 @@ const cart = () => {
         </View>
           <Text style={{paddingVertical : 20, fontFamily : 'Railway1'}}>Your Cart is empty</Text>
 
-        <TouchableOpacity style={styles.btnStyles}>
+        <TouchableOpacity style={styles.btnStyles} onPress={()=>{router.replace('/(protected)/home')}}>
           <Text style={{color : 'white'}}>Add Items to cart</Text>
         </TouchableOpacity>
         </View>
@@ -33,140 +95,50 @@ const cart = () => {
 
         <ScrollView style={styles.container3} showsVerticalScrollIndicator={false}>
 
-          <View style={styles.eachCartDiv}>
-            <View style={styles.eachCart}>
-              <View style={{overflow : 'hidden', width : 90, height : 80, borderRadius : 5}}>
-                <Image 
-                  source={require('../../assets/images/imgFood2.png')}
-                  style={{width : 100, height : 100, }}
-                />
-              </View>
-
-              <View style={styles.cartRight}>
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 50}}>
-                  <Text style={{fontFamily : 'Railway2', fontSize : 18}}>Belle Combo</Text> 
-                  <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray'}}>3 Items</Text>
-                </View>
-                <Text style={{fontFamily : 'Railway1', fontSize : 12, paddingVertical : 6, color : Colors.myGreen}}>Kilimajaro - Big Tree</Text>
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 5}}>
-                  <FontAwesome name='motorcycle' size={15} />
-                  <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Delivering to Iwofe, PH</Text>
-                </View>
-              </View>
-              
-            </View>
-
-            <View style={styles.checkOutDiv}>
-            
-
-                <Link href={"/authRoute/proceed_checkout"} asChild>
-                    <TouchableOpacity style={styles.checkOutBtn}>
-                    <Text style={{fontFamily : 'Railway2', color : 'white'}}>Checkout</Text>
-                    </TouchableOpacity>
-                </Link>
-
-              <Text style={{fontFamily : 'Railway2'}}>View Selection</Text>
-              <FontAwesome name='trash' size={15} color={Colors.myRed}/>
-            </View>
+          <View style={{display : 'flex', flexDirection : 'row', paddingBottom : 10}}>
+          <TouchableOpacity onPress={deleteAll} style={{backgroundColor : Colors.myGray, padding : 5, paddingHorizontal : 20, borderRadius : 3}}>
+                <Text style={{fontFamily : 'Railway3'}}>Clear Cart</Text>
+          </TouchableOpacity>
           </View>
 
-          <View style={styles.eachCartDiv}>
-            <View style={styles.eachCart}>
-              <View style={{overflow : 'hidden', width : 90, height : 80, borderRadius : 5}}>
-                <Image 
-                  source={require('../../assets/images/imgFood3.png')}
-                  style={{width : 100, height : 100, }}
-                />
+          {cartItems.map((cartItem : any, index : any) =>(
+            <View style={styles.eachCartDiv} key={index}>
+              <View style={styles.eachCart}>
+                <View style={{overflow : 'hidden', width : 90, height : 80, borderRadius : 5}}>
+                  <Image 
+                    source={require('../../assets/images/imgFood2.png')}
+                    style={{width : 100, height : 100, }}
+                  />
+                </View>
+
+                <View style={styles.cartRight}>
+                  <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 50}}>
+                    <Text style={{fontFamily : 'Railway2', fontSize : 18}}>{cartItem.cuisines.name}</Text> 
+                    <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray'}}>3 Items</Text>
+                  </View>
+                  <Text style={{fontFamily : 'Railway1', fontSize : 12, paddingVertical : 6, color : Colors.myGreen}}>Kilimajaro - Big Tree</Text>
+                  <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 5}}>
+                    <FontAwesome name='motorcycle' size={15} />
+                    <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Delivering to Iwofe, PH</Text>
+                  </View>
+                </View>
+                
               </View>
 
-              <View style={styles.cartRight}>
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 50}}>
-                  <Text style={{fontFamily : 'Railway2', fontSize : 18}}>Belle Combo</Text> 
-                  <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray'}}>3 Items</Text>
-                </View>
-                <Text style={{fontFamily : 'Railway1', fontSize : 12, paddingVertical : 6, color : Colors.myGreen}}>Kilimajaro - Big Tree</Text>
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 5}}>
-                  <FontAwesome name='motorcycle' size={15} />
-                  <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Delivering to Iwofe, PH</Text>
-                </View>
-              </View>
+              <View style={styles.checkOutDiv}>
               
-            </View>
 
-            <View style={styles.checkOutDiv}>
-              <TouchableOpacity style={styles.checkOutBtn}>
-                <Text style={{fontFamily : 'Railway2', color : 'white'}}>Checkout</Text>
-              </TouchableOpacity>
-              <Text style={{fontFamily : 'Railway2'}}>View Selection</Text>
-              <FontAwesome name='trash' size={15} color={Colors.myRed}/>
-            </View>
-          </View>
+                  <Link href={"/authRoute/proceed_checkout"} asChild>
+                      <TouchableOpacity style={styles.checkOutBtn}>
+                      <Text style={{fontFamily : 'Railway2', color : 'white'}}>Checkout</Text>
+                      </TouchableOpacity>
+                  </Link>
 
-
-          <View style={styles.eachCartDiv}>
-            <View style={styles.eachCart}>
-              <View style={{overflow : 'hidden', width : 90, height : 80, borderRadius : 5}}>
-                <Image 
-                  source={require('../../assets/images/imgFood4.png')}
-                  style={{width : 100, height : 100, }}
-                />
+                <Text style={{fontFamily : 'Railway2'}}>View Selection</Text>
+                <FontAwesome name='trash' size={15} color={Colors.myRed}/>
               </View>
-
-              <View style={styles.cartRight}>
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 50}}>
-                  <Text style={{fontFamily : 'Railway2', fontSize : 18}}>Belle Combo</Text> 
-                  <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray'}}>3 Items</Text>
-                </View>
-                <Text style={{fontFamily : 'Railway1', fontSize : 12, paddingVertical : 6, color : Colors.myGreen}}>Kilimajaro - Big Tree</Text>
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 5}}>
-                  <FontAwesome name='motorcycle' size={15} />
-                  <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Delivering to Iwofe, PH</Text>
-                </View>
-              </View>
-              
             </View>
-
-            <View style={styles.checkOutDiv}>
-              <TouchableOpacity style={styles.checkOutBtn}>
-                <Text style={{fontFamily : 'Railway2', color : 'white'}}>Checkout</Text>
-              </TouchableOpacity>
-              <Text style={{fontFamily : 'Railway2'}}>View Selection</Text>
-              <FontAwesome name='trash' size={15} color={Colors.myRed}/>
-            </View>
-          </View>
-
-
-          <View style={styles.eachCartDiv}>
-            <View style={styles.eachCart}>
-              <View style={{overflow : 'hidden', width : 90, height : 80, borderRadius : 5}}>
-                <Image 
-                  source={require('../../assets/images/imgFood2.png')}
-                  style={{width : 100, height : 100, }}
-                />
-              </View>
-
-              <View style={styles.cartRight}>
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 50}}>
-                  <Text style={{fontFamily : 'Railway2', fontSize : 18}}>Belle Combo</Text> 
-                  <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray'}}>3 Items</Text>
-                </View>
-                <Text style={{fontFamily : 'Railway1', fontSize : 12, paddingVertical : 6, color : Colors.myGreen}}>Kilimajaro - Big Tree</Text>
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 5}}>
-                  <FontAwesome name='motorcycle' size={15} />
-                  <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Delivering to Iwofe, PH</Text>
-                </View>
-              </View>
-              
-            </View>
-
-            <View style={styles.checkOutDiv}>
-              <TouchableOpacity style={styles.checkOutBtn}>
-                <Text style={{fontFamily : 'Railway2', color : 'white'}}>Checkout</Text>
-              </TouchableOpacity>
-              <Text style={{fontFamily : 'Railway2'}}>View Selection</Text>
-              <FontAwesome name='trash' size={15} color={Colors.myRed}/>
-            </View>
-          </View>
+          ))}
 
       </ScrollView>
       )}
@@ -179,7 +151,7 @@ export default cart
 const styles = StyleSheet.create({
   container : {
     flex : 1,
-
+    backgroundColor : 'white'
   },
 
 
