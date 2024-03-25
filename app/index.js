@@ -5,6 +5,7 @@ const StartPage = () => {
   return (
     <View style={{flex : 1, justifyContent : 'center', alignItems : 'center'}}>
       <ActivityIndicator size={'large'}/>
+      <Text style={{fontSize : 15, fontFamily : 'Railway3', paddingTop : 20}}>Getting There</Text>
     </View>
   )
 }
