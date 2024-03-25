@@ -28,12 +28,12 @@ const MainLayout = () => {
     const inApp = segments[0] == '/(protected)'
 
     if(isAuthenticated && !inApp ){
-      // router.replace('/authRoute/home_dash')
+      router.replace('/authRoute/home_dash')
       // router.replace('/home')
       // router.replace('/account')
       // router.replace('/authRoute/(profile)/personal')
       // router.replace('/authRoute/(profile)/wallet')
-      router.replace('/authRoute/(profile)/FAQs')
+      // router.replace('/authRoute/(profile)/FAQs')
     }else if(isAuthenticated == false ){
       router.replace('/login')
     }

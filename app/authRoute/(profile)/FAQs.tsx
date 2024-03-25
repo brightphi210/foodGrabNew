@@ -4,6 +4,7 @@ import BackHeader from '@/components/BackHeader'
 import { StatusBar } from 'expo-status-bar'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import Colors from '@/constants/Colors'
+import BackHeaderAccount from '@/components/BackHeaderAccount'
 
 const FAQs = () => {
 
@@ -43,11 +44,11 @@ const FAQs = () => {
   return (
     <View style={styles.container}>
         <StatusBar style='dark'/>
-        <BackHeader />
+        <BackHeaderAccount />
         <Text style={{fontFamily : 'Railway2', fontSize : 16}}>FAQs</Text>
 
 
-        <View style={{paddingTop : 20}}>
+        <View style={{paddingTop : 10}}>
             <TouchableOpacity onPress={handleShow1} style={{display: 'flex', flexDirection : 'row', alignItems : 'center', gap : 10, marginTop : 30}}>
                 <FontAwesome name='question-circle-o' size={15} color={Colors.myRed}/>
                 <Text style={{fontFamily : 'Railway3', fontSize : 15}}>How do food grab work</Text>

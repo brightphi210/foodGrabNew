@@ -17,7 +17,7 @@ const index = () => {
   const {userToken} = useContext(AuthContext)
   const [show, setShow] = useState(false);
 
-  const navigate = useNavigation()
+  const navigate = useNavigation<any>()
 
   const [isLoading, setIsLoading] = useState(true);
 

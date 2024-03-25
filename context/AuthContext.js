@@ -27,8 +27,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-
-  // alert(userToken)
   
 
   const logout = () => {

@@ -4,6 +4,7 @@ import Colors from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import DashHeader from '@/components/DashHeader';
 import { Link, useRouter } from 'expo-router'
+import { StatusBar } from 'expo-status-bar';
 
 // import DashHeader from '../../components/DashHeader';
 
@@ -15,14 +16,17 @@ const index = () => {
     }
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style='dark'/>
         <DashHeader />
+        
         <View>
 
-            <View style={{paddingVertical : 10, paddingBottom : 0}}>
-              <Image source={require('../../assets/images/dashSec1.png')}
-                style={styles.imageDIv}
-              />
-            </View>
+              <View style={{paddingVertical : 0, paddingBottom : 0, }}>
+                <Image source={require('../../assets/images/dashSec2.png')}
+                  style={styles.imageDIv}
+                  resizeMode='contain'
+                />
+              </View>
 
 
             <View style={{display: 'flex', paddingTop : 20, paddingHorizontal : 10, flexDirection : 'row', alignItems : 'center', justifyContent : 'center', gap : 10}}>

@@ -6,6 +6,7 @@ import Colors from '@/constants/Colors'
 import { StatusBar } from 'expo-status-bar'
 import { Ionicons } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import BackHeaderAccount from '@/components/BackHeaderAccount'
 
 
 const personal = () => {
@@ -61,7 +62,7 @@ const personal = () => {
     <View style={styles.container}>
         
         <StatusBar style='dark'/>
-        <BackHeader />
+        <BackHeaderAccount />
         <Text style={{fontFamily : 'Railway3', fontSize : 16}}>Person Details</Text>
 
         <View style={{paddingVertical : 20}}>

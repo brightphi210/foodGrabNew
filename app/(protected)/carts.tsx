@@ -43,7 +43,7 @@ const cart = () => {
 
         {cartItems === null ? (
           <View style={{
-            backgroundColor : Colors.myGray, 
+            backgroundColor : Colors.myLightGray, 
             marginLeft : 'auto', marginTop : 30, 
             marginRight : 20, display : 'flex', flexDirection : 'column',
             justifyContent : 'center',
@@ -59,7 +59,7 @@ const cart = () => {
           
         ) : (
           <View style={{
-            backgroundColor : Colors.myGray, 
+            backgroundColor : Colors.myLightGray, 
             marginLeft : 'auto', marginTop : 30, 
             marginRight : 20, display : 'flex', flexDirection : 'column',
             justifyContent : 'center',
@@ -96,7 +96,7 @@ const cart = () => {
         <ScrollView style={styles.container3} showsVerticalScrollIndicator={false}>
 
           <View style={{display : 'flex', flexDirection : 'row', paddingBottom : 10}}>
-          <TouchableOpacity onPress={deleteAll} style={{backgroundColor : Colors.myGray, padding : 5, paddingHorizontal : 20, borderRadius : 3}}>
+          <TouchableOpacity onPress={deleteAll} style={{backgroundColor : Colors.myLightGray, padding : 5, paddingHorizontal : 20, borderRadius : 3}}>
                 <Text style={{fontFamily : 'Railway3'}}>Clear Cart</Text>
           </TouchableOpacity>
           </View>
