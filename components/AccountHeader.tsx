@@ -6,7 +6,7 @@ const AccountHeader = () => {
     return (
         <SafeAreaView style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
             <View>
-                <Text style={{ fontSize: 22, fontWeight: "500", fontFamily: 'Railway2', }}>My Account</Text>
+                <Text style={{ fontSize: 15, fontWeight: "500", fontFamily: 'Railway2', }}>My Account</Text>
             </View>
         </SafeAreaView>
     )

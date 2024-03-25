@@ -2,6 +2,7 @@ import { Link, Tabs } from 'expo-router';
 import { Pressable } from 'react-native';
 import { Text, TouchableOpacity } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { AntDesign } from '@expo/vector-icons';
 import Colors from '@/constants/Colors';
 import { View, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
@@ -61,11 +62,12 @@ export default function TabLayout() {
           title: "",
           tabBarIcon: ({ focused }) => (
             <View>
-              <Ionicons
-                size={focused ? 25 : 20}
+              {/* <AntDesign name='home' size={30}/> */}
+              <AntDesign
+                size={focused ? 25 : 23}
                 style={{ marginBottom: -3, textAlign : 'center', }}
-                name="home-outline"
-                color={focused ? Colors.myGreen : 'gray'}
+                name="home"
+                color={focused ? Colors.btnGreen : 'gray'}
               />
             </View>
           ),
@@ -99,7 +101,7 @@ export default function TabLayout() {
                 size={focused ? 25 : 25}
                 style={{ marginBottom: -3, textAlign : 'center' }}
                 name="basket-outline"
-                color={focused ? Colors.myGreen : 'gray'}
+                color={focused ? Colors.btnGreen : 'gray'}
               />
             </View>
           ),
@@ -123,7 +125,7 @@ export default function TabLayout() {
                 size={focused ? 25 : 20}
                 style={{ marginBottom: -3, textAlign : 'center' }}
                 name="bag-outline"
-                color={focused ? Colors.myGreen : 'gray'}
+                color={focused ? Colors.btnGreen : 'gray'}
               />
             </View>
           ),
@@ -148,7 +150,7 @@ export default function TabLayout() {
                 size={focused ? 25 : 20}
                 style={{ marginBottom: -3, textAlign : 'center' }}
                 name="user-circle"
-                color={focused ? Colors.myGreen : 'gray'}
+                color={focused ? Colors.btnGreen : 'gray'}
               />
             </View>
           ),

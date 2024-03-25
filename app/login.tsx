@@ -59,6 +59,7 @@ const register = () => {
             const token = data.token; 
       
             await AsyncStorage.setItem('token', JSON.stringify(token));
+            await AsyncStorage.setItem('data', JSON.stringify(data));
             alert('Login successful');
             setIsLoading(false);
             navigate.replace('/home'); 

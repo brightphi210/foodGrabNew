@@ -4,15 +4,17 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialCommunityIcons, Ionicons, Feather, MaterialIcons, AntDesign } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link } from "expo-router"
+import { Link, useRouter } from "expo-router"
 
 import AccountHeader from '@/components/AccountHeader';
 import Colors from '@/constants/Colors';
-import ProfileImg  from "../../assets/images/default-avatar-profile-icon-social-600nw-1677509740.webp"
 import { AuthContext } from '@/context/AuthContext';
+import { StatusBar } from 'expo-status-bar';
 
 const account = () => {
   const [image, setImage] = useState()
+
+  const router = useRouter()
   const { userData, logout } = useContext(AuthContext)
 
 
@@ -46,11 +48,20 @@ const account = () => {
   }
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style='dark'/>
       <AccountHeader />
 
       <View style={{ flex: 1, marginTop: 30, alignItems: 'center' }}>
         <View style={styles.avatarContainer}>
-          <Image source={image ? { uri: image } : ProfileImg} style={styles.image} />
+
+          <View>
+            {image ? (
+              <Image source={{uri : image}} style={styles.image} />
+            ) : (
+
+            <Image source={require('../../assets/images/defaultProf.png')} style={styles.image} />
+            )}
+          </View>
           <TouchableOpacity style={styles.editButton} onPress={() => uploadImage()}>
             <MaterialCommunityIcons name="camera-outline" size={18} color="#fff" />
           </TouchableOpacity>
@@ -61,59 +72,61 @@ const account = () => {
           <Text style={{ textAlign: 'center', color: "#98A2B3", fontFamily: "Railway3" }}><Text style={{ color: Colors.myRed }}>56 </Text>Successful Order</Text>
         </View>
 
-        <View style={{ width: "100%", marginTop: 30, flexDirection: 'column', gap: 30 }}>
-          <Link href={""} asChild>
+        <View style={{ width: "100%", marginTop: 50, flexDirection: 'column', gap: 40 }}>
+
+
+            <TouchableOpacity style={{ 
+              flexDirection: 'row', 
+              alignItems: 'center', 
+              justifyContent: 'space-between' 
+            }} onPress={()=> router.push('/authRoute/(profile)/personal')}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <MaterialIcons name="perm-contact-cal" size={15} color={Colors.myRed} />
+                <Text style={{ fontSize: 15, color: "#606060", fontFamily : 'Railway3'}}>Personal Information</Text>
+              </View>
+              <MaterialIcons name="arrow-forward-ios" size={13} color={Colors.myGray} />
+            </TouchableOpacity>
+
+
+            <TouchableOpacity onPress={()=> router.push('/authRoute/(profile)/wallet')} 
+              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <MaterialCommunityIcons name="wallet-outline" size={15} color={Colors.myRed} />
+                <Text style={{ fontSize: 15, color: "#606060", fontFamily : 'Railway3'}}>Wallet (Payment)</Text>
+              </View>
+              <MaterialIcons name="arrow-forward-ios" size={13} color={Colors.myGray} />
+            </TouchableOpacity>
+
+
+
             <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <MaterialIcons name="perm-contact-cal" size={24} color={Colors.myRed} />
-                <Text style={{ fontSize: 15, color: "#606060", fontWeight: "500" }}>Personal Information</Text>
+                <Feather name="phone" size={15} color={Colors.myRed} />
+                <Text style={{ fontSize: 15, color: "#606060", fontFamily : 'Railway3'}}>Support</Text>
               </View>
-              <MaterialIcons name="arrow-forward-ios" size={22} color={Colors.myGray} />
+              <MaterialIcons name="arrow-forward-ios" size={13} color={Colors.myGray} />
             </TouchableOpacity>
-          </Link>
-          <Link href={""} asChild>
+
+
+
             <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <MaterialCommunityIcons name="wallet-outline" size={24} color={Colors.myRed} />
-                <Text style={{ fontSize: 18, color: "#606060", fontWeight: "500" }}>Wallet (Payment)</Text>
+                <AntDesign name="questioncircleo" size={15} color={Colors.myRed} />
+                <Text style={{ fontSize: 15, color: "#606060", fontFamily : 'Railway3'}}>FAQs</Text>
               </View>
-              <MaterialIcons name="arrow-forward-ios" size={22} color={Colors.myGray} />
+              <MaterialIcons name="arrow-forward-ios" size={13} color={Colors.myGray} />
             </TouchableOpacity>
-          </Link>
-          <Link href={""} asChild>
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <Ionicons name="location-outline" size={24} color={Colors.myRed} />
-                <Text style={{ fontSize: 18, color: "#606060", fontWeight: "500" }}>Delivery Address</Text>
-              </View>
-              <MaterialIcons name="arrow-forward-ios" size={22} color={Colors.myGray} />
-            </TouchableOpacity>
-          </Link>
-          <Link href={""} asChild>
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <Feather name="phone" size={24} color={Colors.myRed} />
-                <Text style={{ fontSize: 18, color: "#606060", fontWeight: "500" }}>Support</Text>
-              </View>
-              <MaterialIcons name="arrow-forward-ios" size={22} color={Colors.myGray} />
-            </TouchableOpacity>
-          </Link>
-          <Link href={""} asChild>
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                <AntDesign name="questioncircleo" size={24} color={Colors.myRed} />
-                <Text style={{ fontSize: 18, color: "#606060", fontWeight: "500" }}>FAQs</Text>
-              </View>
-              <MaterialIcons name="arrow-forward-ios" size={22} color={Colors.myGray} />
-            </TouchableOpacity>
-          </Link>
-          <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+
+
+          <TouchableOpacity onPress={logout} style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-              <AntDesign name="questioncircleo" size={24} color={Colors.myRed} />
-              <Text style={{ fontSize: 18, color: "#606060", fontWeight: "500" }}>Logout</Text>
+              <AntDesign name="logout" size={15} color={Colors.myRed} />
+              <Text style={{ fontSize: 15, color: "#606060", fontFamily : 'Railway3'}}>Logout</Text>
             </View>
-            <MaterialIcons name="arrow-forward-ios" size={22} color={Colors.myGray} />
+            <MaterialIcons name="arrow-forward-ios" size={13} color={Colors.myGray} />
           </TouchableOpacity>
+
+
         </View>
       </View>
     </SafeAreaView>
@@ -126,7 +139,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
     paddingTop: 0,
   },
   avatarContainer: {
@@ -138,7 +151,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderColor: Colors.myRed,
-    borderWidth: 2
+    borderWidth: 1
   },
   editButton: {
     backgroundColor: Colors.myRed,

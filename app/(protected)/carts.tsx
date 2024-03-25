@@ -39,7 +39,7 @@ const cart = () => {
       <StatusBar style='dark'/>
 
       <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
-        <Text style={{paddingLeft : 20, fontFamily : 'Railway2', paddingTop : 30, fontSize : 20}}>My Cart</Text>
+        <Text style={{paddingLeft : 20, fontFamily : 'Railway2', paddingTop : 30, fontSize : 15}}>My Cart</Text>
 
         {cartItems === null ? (
           <View style={{

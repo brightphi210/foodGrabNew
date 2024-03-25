@@ -6,7 +6,7 @@ const OrderHeader = () => {
     return (
         <SafeAreaView style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
             <View>
-                <Text style={{ fontSize: 20, fontWeight: "500", fontFamily: 'Railway2', }}>My Orders</Text>
+                <Text style={{ fontSize: 15, fontWeight: "500", fontFamily: 'Railway2', }}>My Orders</Text>
             </View>
         </SafeAreaView>
     )

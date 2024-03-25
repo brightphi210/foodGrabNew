@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView, ActivityIndicator, RefreshControl } from 'react-native'
 import React, { useContext, useState, useEffect } from 'react'
 import Colors from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -14,7 +14,6 @@ import DashHeader from '@/components/DashHeader';
 
 
 const index = () => {
-  const {logout} = useContext(AuthContext)
   const {userToken} = useContext(AuthContext)
   const [show, setShow] = useState(false);
 
@@ -64,9 +63,12 @@ const index = () => {
 
 
   return (
+    
     <SafeAreaView style={styles.container}>
         <DashHeader />
         <StatusBar style='dark'/>
+
+
 
         <View style={{position : 'relative', paddingTop : 10, paddingBottom : 2}}>
           <Ionicons name='search' size={15} style={{position : 'absolute', top : 25, left : 15}}/>
@@ -77,9 +79,6 @@ const index = () => {
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
-            <TouchableOpacity onPress={logout}>
-              <Text>Logout</Text>
-            </TouchableOpacity>
               <View style={{paddingVertical : 0, paddingBottom : 0, }}>
                 <Image source={require('../../assets/images/dashSec2.png')}
                   style={styles.imageDIv}
@@ -288,6 +287,8 @@ const index = () => {
 
           }
       </ScrollView>
+
+
 
 
     </SafeAreaView>
