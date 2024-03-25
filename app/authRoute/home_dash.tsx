@@ -42,7 +42,7 @@ const index = () => {
                   </View>
                 </TouchableOpacity>
 
-              <TouchableOpacity style={styles.imageDIvBorder}>
+              <TouchableOpacity style={styles.imageDIvBorder} onPress={handlePress}>
                 <View>
                   <Image source={require('../../assets/images/storeSearch.png')}
                     style={{width : 100, height : 100, alignSelf : 'center'}}
@@ -53,7 +53,7 @@ const index = () => {
             </View>
             
 
-            <TouchableOpacity style={styles.imageDIvBorder2}>
+            <TouchableOpacity style={styles.imageDIvBorder2} onPress={handlePress}>
                 <View>
                   <Image source={require('../../assets/images/explore.png')}
                     style={{width : 100, height : 80, alignSelf : 'center'}}
