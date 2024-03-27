@@ -6,6 +6,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { Link, useRouter } from 'expo-router'
 import { useNavigation } from 'expo-router';
 import BackHeader from '@/components/BackHeader';
+import { StatusBar } from 'expo-status-bar';
 
 const prefered_payment = () => {
 
@@ -55,29 +56,30 @@ const prefered_payment = () => {
 
   return (
     <View style={styles.container}>
+        <StatusBar style='dark'/>
         <BackHeader />
-      <Text style={{fontFamily : 'Railway3', fontSize : 18}}>Choose your preferred payment</Text>
+      <Text style={{fontFamily : 'Railway3', fontSize : 15}}>Choose your preferred payment</Text>
 
       
       <View >
         <View style={{paddingTop : 20}}>
-            <View style={styles.selectDiv}>
+            <TouchableOpacity style={styles.selectDiv} onPress={activate1}>
 
                 <View style={{display : 'flex', flexDirection :'row', gap : 5, alignItems : 'center'}}>
                     <Ionicons name='wallet-outline' size={17} color={Colors.myLightGreen}/>
                     <Text style={{fontFamily : 'Railway3', color : Colors.myGreen, fontSize : 15}}>Bank Card</Text>
                 </View>
 
-                <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate1}>
+                <TouchableOpacity style={{marginLeft : 'auto'}} >
                     <View style={current1 ? styles.radioOuter : styles.radioNone}>
                         <View style={current1 ? styles.radioInner : null}></View>
                     </View>
                 </TouchableOpacity>
 
-            </View>
+            </TouchableOpacity>
         </View>
 
-        <View style={{paddingTop : 20}}>
+        <TouchableOpacity style={{paddingTop : 20}} onPress={activate2}>
             <View style={styles.selectDiv}>
 
                 <View style={{display : 'flex', flexDirection :'row', gap : 5, alignItems : 'center'}}>
@@ -85,13 +87,13 @@ const prefered_payment = () => {
                     <Text style={{fontFamily : 'Railway3', color : Colors.myGreen, fontSize : 15}}>Bank Transfer</Text>
                 </View>
 
-                <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate2}>
+                <TouchableOpacity style={{marginLeft : 'auto'}} >
                     <View style={current2 ? styles.radioOuter : styles.radioNone}>
                         <View style={current2 ? styles.radioInner : null}></View>
                     </View>
                 </TouchableOpacity>
             </View>
-        </View>
+        </TouchableOpacity>
           
         </View>
 

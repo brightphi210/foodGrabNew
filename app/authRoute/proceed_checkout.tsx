@@ -7,6 +7,8 @@ import Colors from '@/constants/Colors';
 import { Link } from 'expo-router'
 import { useNavigation } from 'expo-router';
 import BackHeader from '@/components/BackHeader';
+import { StatusBar } from 'expo-status-bar';
+import { AntDesign } from '@expo/vector-icons';
 
 
 const proceed_checkout = () => {
@@ -14,72 +16,73 @@ const proceed_checkout = () => {
     const navigate = useNavigation()
   return (
     <View style={styles.container} >
+        <StatusBar style='dark'/>
         <BackHeader />
       <View>
 
         <View style={styles.viewSelction}>
-            <Text style={{fontSize : 17, fontFamily : 'Railway2'}}>View Selection</Text>
+            <Text style={{fontSize : 15, fontFamily : 'Railway2'}}>View Selection</Text>
             <TouchableOpacity >
-                <FontAwesome name='trash' color={Colors.myRed} size={18}/>
+                <FontAwesome name='trash' color={Colors.myRed} size={15}/>
             </TouchableOpacity>
         </View>
 
         <View >
             <View style={styles.cartDiv}>
-                <Text style={{fontFamily : 'Railway3', fontSize : 15}}>Jollof Rice</Text>
-                <Text style={{fontFamily : 'Railway3', fontSize : 15, color : 'grey'}}>N2500</Text>
+                <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Jollof Rice</Text>
+                <Text style={{ fontSize : 13, color : 'grey'}}>N2500</Text>
 
                 <View style={styles.iconDiv}>
 
                     <TouchableOpacity>
-                        <Text style={{fontFamily : 'Railway1', fontSize : 35}}>-</Text>
+                        <AntDesign name='minus' size={15} />
                     </TouchableOpacity>
 
-                    <Text style={{fontFamily : 'Railway1', fontSize : 25}}>1</Text>
+                    <Text style={{ fontSize : 15}}>1</Text>
 
                     <TouchableOpacity>
-                        <Text style={{fontFamily : 'Railway1', fontSize : 35}}>+</Text>
+                    <AntDesign name='plus' size={15} />
                     </TouchableOpacity>
 
                 </View>
             </View>
 
             <View style={styles.cartDiv}>
-                <Text style={{fontFamily : 'Railway3', fontSize : 15}}>Drink (Coke)</Text>
-                <Text style={{fontFamily : 'Railway3', fontSize : 15, color : 'grey'}}>N900</Text>
+                <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Drink (Coke)</Text>
+                <Text style={{fontSize : 13, color : 'grey'}}>N900</Text>
 
                 <View style={styles.iconDiv}>
 
                     <TouchableOpacity>
-                        <Text style={{fontFamily : 'Railway1', fontSize : 35}}>-</Text>
+                        <AntDesign name='minus' size={15} />
                     </TouchableOpacity>
 
-                    <Text style={{fontFamily : 'Railway1', fontSize : 25}}>1</Text>
+                    <Text style={{ fontSize : 15}}>1</Text>
 
                     <TouchableOpacity>
-                        <Text style={{fontFamily : 'Railway1', fontSize : 35}}>+</Text>
+                    <AntDesign name='plus' size={15} />
                     </TouchableOpacity>
 
                 </View>
             </View>
 
             <View style={styles.cartDiv}>
-                <Text style={{fontFamily : 'Railway3', fontSize : 15}}>Chicken (Spicy Fried)</Text>
-                <Text style={{fontFamily : 'Railway3', fontSize : 15, color : 'grey'}}>N300</Text>
+                <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Chicken (Spicy Fried)</Text>
+                <Text style={{ fontSize : 13, color : 'grey'}}>N300</Text>
 
                 <View style={styles.iconDiv}>
 
-                    <TouchableOpacity>
-                        <Text style={{fontFamily : 'Railway1', fontSize : 35}}>-</Text>
-                    </TouchableOpacity>
+<TouchableOpacity>
+    <AntDesign name='minus' size={15} />
+</TouchableOpacity>
 
-                    <Text style={{fontFamily : 'Railway1', fontSize : 25}}>1</Text>
+<Text style={{ fontSize : 15}}>1</Text>
 
-                    <TouchableOpacity>
-                        <Text style={{fontFamily : 'Railway1', fontSize : 35}}>+</Text>
-                    </TouchableOpacity>
+<TouchableOpacity>
+<AntDesign name='plus' size={15} />
+</TouchableOpacity>
 
-                </View>
+</View>
             </View>
 
             <View style={styles.btnDivs}>
@@ -120,8 +123,7 @@ const styles = StyleSheet.create({
         flex : 1,
         position : 'relative',
         backgroundColor : 'white',
-        padding : 20,
-        paddingTop : 0,
+        paddingHorizontal : 20,
     },
 
     viewSelction : {
@@ -136,7 +138,7 @@ const styles = StyleSheet.create({
         flexDirection : 'row',
         justifyContent : 'space-between',
         alignItems : 'center',
-        paddingTop : 20
+        paddingTop : 30
     },
 
     iconDiv : {

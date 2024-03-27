@@ -19,6 +19,6 @@ export default BackHeader
 
 const styles = StyleSheet.create({
     container : {
-        paddingVertical : 20
+        paddingVertical : 10
     }
 })

@@ -9,9 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(undefined);
 
 
-  useEffect(() => {
-    getData();
-  }, []);
+
 
   const getData = async () => {
     try {
@@ -26,6 +24,10 @@ export const AuthProvider = ({ children }) => {
       console.error('Error retrieving authentication data:', e);
     }
   };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   
 

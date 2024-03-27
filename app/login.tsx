@@ -62,7 +62,7 @@ const register = () => {
             await AsyncStorage.setItem('data', JSON.stringify(data));
             alert('Login successful');
             setIsLoading(false);
-            navigate.replace('/home'); 
+            navigate.replace('/authRoute/home_dash'); 
       
           } else {
             alert(`Login failed: ${data.message || 'An error occurred'}`); 

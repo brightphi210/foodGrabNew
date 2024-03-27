@@ -2,10 +2,13 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Stack, useRouter } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext, AuthProvider, useAuth } from '@/context/AuthContext';
 import { Slot } from 'expo-router';
 import { useSegments } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export {
   ErrorBoundary,
@@ -21,19 +24,46 @@ const MainLayout = () => {
 
   const router = useRouter();
 
+  let [seenScreen, setSeenScree] = useState<any>(false)
+  const getData = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('welcomeScreen');
+        setSeenScree(jsonValue)
+    } catch (e) {
+      console.log(e)
+    }
+};
+
+useEffect(() => {
+    getData();
+},[]);
+
+
+// alert(seenScreen)
 
   useEffect(()=>{
     if(typeof isAuthenticated == 'undefined') return 
 
     const inApp = segments[0] == '/(protected)'
 
-    if(isAuthenticated && !inApp ){
-      router.replace('/authRoute/home_dash')
+
+
+
+    if((seenScreen === false || seenScreen === null) && isAuthenticated === false){
+      router.replace('/public/welcome_one')
+    }
+
+    else if(isAuthenticated && !inApp ){
+      // router.replace('/authRoute/home_dash')
       // router.replace('/home')
-      // router.replace('/account')
+      router.replace('/account')
+      // router.replace('/carts')
       // router.replace('/authRoute/(profile)/personal')
       // router.replace('/authRoute/(profile)/wallet')
       // router.replace('/authRoute/(profile)/FAQs')
+      // router.replace('/authRoute/proceed_checkout')
+      // router.replace('/authRoute/order_summary')
+      // router.replace('/public/welcome_one')
     }else if(isAuthenticated == false ){
       router.replace('/login')
     }
@@ -63,6 +93,7 @@ export default function RootLayoutNav() {
 
   useEffect(() => {
     if (loaded) {
+      <StatusBar style='light'/>
       SplashScreen.hideAsync();
     }
   }, [loaded]);

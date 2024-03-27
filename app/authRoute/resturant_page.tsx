@@ -13,7 +13,7 @@ import { StatusBar } from 'expo-status-bar';
 
 const resturantPage = () => {
 
-    const route = useRoute();
+    const route = useRoute<any>();
     const { shopId } : any = route.params;
 
 
@@ -61,11 +61,13 @@ const resturantPage = () => {
 
 
 
-  const navigate = useNavigation()
+  const navigate = useNavigation<any>()
 
-  const handleProductPress = (cuisines : any) => {
-    navigate.navigate('authRoute/order_page', { cuisines })
+  const handleProductPress = (cuisines : any, singleShopData : any) => {
+    navigate.navigate('authRoute/order_page', { cuisines, singleShopData })
   };
+
+  // console.log(singleShopData)
  
 
   return (
@@ -129,7 +131,7 @@ const resturantPage = () => {
               <ScrollView style={{paddingVertical : 10, height : '60%'}} showsVerticalScrollIndicator ={false}>
 
                       {cuisines.map((eachCuisines:any, index:any)=>(
-                      <TouchableOpacity key={index} onPress={() => handleProductPress(eachCuisines)}>
+                      <TouchableOpacity key={index} onPress={() => handleProductPress(eachCuisines, singleShopData)}>
                       <View style={{display : 'flex', 
                           flexDirection : 'row', gap : 10, 
                           justifyContent : 'center', 

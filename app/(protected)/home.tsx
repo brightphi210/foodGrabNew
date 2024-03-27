@@ -10,11 +10,12 @@ import { StatusBar } from 'expo-status-bar';
 import { AuthContext } from '@/context/AuthContext';
 import { BASE_URL } from '@/Enpoints/Endpoint';
 import DashHeader from '@/components/DashHeader';
-// import SkeletonLoading from 'react-native-skeleton-loading'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 const index = () => {
-  const {userToken} = useContext(AuthContext)
+  // const {userToken} = useContext(AuthContext)
   const [show, setShow] = useState(false);
 
   const navigate = useNavigation<any>()
@@ -29,10 +30,26 @@ const index = () => {
     setShow(true);
   }
 
+
+  const [userToken, setUserToken] = useState(null);
+  const getData = async () => {
+    try {
+      const storedToken = await AsyncStorage.getItem('token');
+      if (storedToken) {
+        setUserToken(JSON.parse(storedToken));
+      } 
+    } catch (e) {
+      console.error('Error retrieving authentication data:', e);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
   const [shopData, setShopData] = useState<any>([])
 
   const fetchData = async () => {
-    setIsLoading(true)
     try {
       const res = await fetch(`${BASE_URL}shops`, {
         method: 'GET',
@@ -42,8 +59,9 @@ const index = () => {
         },
       });
       const myData = await res.json();
-      setIsLoading(true);
+      setIsLoading(false);
       setShopData(myData.data);
+      
     } catch (error) {
       setIsLoading(false);
       console.error(error);
@@ -247,7 +265,7 @@ const index = () => {
 
  
 
-                  {shopData == null || shopData == undefined || shopData == '' ? 
+                  {isLoading || !shopData ? 
                   
                   (<ActivityIndicator style={{paddingTop : 100}} size={'large'}/> )
 
@@ -361,9 +379,9 @@ const styles = StyleSheet.create({
   },
 
   restImageDiv :{
-    borderColor : Colors.myGray,
+    borderColor : Colors.myLightGray,
     borderWidth : 1,
-    borderRadius : 10,
+    borderRadius : 5,
     marginBottom : 20
   },
 
@@ -371,8 +389,8 @@ const styles = StyleSheet.create({
   restImage : {
     width : '100%',
     height : 100,
-    borderTopRightRadius : 10,
-    borderTopLeftRadius : 10,
+    borderTopRightRadius : 5,
+    borderTopLeftRadius : 5,
   }
 
 })

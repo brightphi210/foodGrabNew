@@ -7,6 +7,8 @@ import BackHeader from '@/components/BackHeader';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { StatusBar } from 'expo-status-bar';
 const orderPage = () => {
 
   
@@ -58,7 +60,10 @@ const orderPage = () => {
     const router = useRouter()
 
     const route = useRoute();
-    const { cuisines } : any = route.params;
+    const { cuisines, singleShopData } : any = route.params;
+
+
+    console.log('This is Single shop Data ............',singleShopData)
 
     const addToCart = async () => {
         try {
@@ -71,7 +76,20 @@ const orderPage = () => {
     
           updatedCart.push({ cuisines });
     
+
+
+          const existingCart2 = await AsyncStorage.getItem('singleShopData');
+          let updatedData = []
+
+
+          if (existingCart2 !== null) {
+            updatedData = JSON.parse(existingCart2);
+          }
+          updatedData.push({singleShopData})
+
+
           await AsyncStorage.setItem('cuisines', JSON.stringify(updatedCart));
+          await AsyncStorage.setItem('singleShopData', JSON.stringify(updatedData));
 
           router.replace('/(protected)/carts')
 
@@ -90,6 +108,7 @@ const orderPage = () => {
 
   return (
     <View style={styles.container}>
+        <StatusBar style='dark'/>
         <BackHeader />
         <View>
 
@@ -106,7 +125,7 @@ const orderPage = () => {
         <View>
             <View>
                 <View style={styles.headStyle}>
-                    <Text style={{fontFamily : 'Railway3'}}>Chicken Style</Text>
+                    <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Chicken Style</Text>
                     <Ionicons name='chevron-down'style={{marginLeft : 'auto', fontSize : 15}}/>
                 </View>
 
@@ -115,7 +134,7 @@ const orderPage = () => {
 
 
                     <View style={styles.selectDiv}>
-                        <Text style={{fontFamily : 'Railway1'}}>Spicy Fried</Text>
+                        <Text style={{fontFamily : 'Railway1', fontSize : 12}}>Spicy Fried</Text>
                         <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate1}>
                             <View style={current1 ? styles.radioOuter : styles.radioNone}>
                                 <View style={current1 ? styles.radioInner : null}></View>
@@ -124,7 +143,7 @@ const orderPage = () => {
                     </View>
 
                     <View style={styles.selectDiv}>
-                        <Text style={{fontFamily : 'Railway1'}}>Crunchy</Text>
+                        <Text style={{fontFamily : 'Railway1', fontSize : 12}}>Crunchy</Text>
                         <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate2}>
                             <View style={current2 ? styles.radioOuter : styles.radioNone}>
                                 <View style={current2 ? styles.radioInner : null}></View>
@@ -138,7 +157,7 @@ const orderPage = () => {
 
             <View>
                 <View style={styles.headStyle}>
-                    <Text style={{fontFamily : 'Railway3'}}>Rice Style</Text>
+                    <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Rice Style</Text>
                     <Ionicons name='chevron-down'style={{marginLeft : 'auto', fontSize : 15}}/>
                 </View>
 
@@ -147,7 +166,7 @@ const orderPage = () => {
 
 
                     <View style={styles.selectDiv}>
-                        <Text style={{fontFamily : 'Railway1'}}>Jollof Rice</Text>
+                        <Text style={{fontFamily : 'Railway1', fontSize : 12}}>Jollof Rice</Text>
                         <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate3}>
                             <View style={current3 ? styles.radioOuter : styles.radioNone}>
                                 <View style={current3 ? styles.radioInner : null}></View>
@@ -156,7 +175,7 @@ const orderPage = () => {
                     </View>
 
                     <View style={styles.selectDiv}>
-                        <Text style={{fontFamily : 'Railway1'}}>Fried Rice</Text>
+                        <Text style={{fontFamily : 'Railway1', fontSize : 12}}>Fried Rice</Text>
                         <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate4}>
                             <View style={current4 ? styles.radioOuter : styles.radioNone}>
                                 <View style={current4 ? styles.radioInner : null}></View>
@@ -171,7 +190,7 @@ const orderPage = () => {
 
             <View>
                 <View style={styles.headStyle}>
-                    <Text style={{fontFamily : 'Railway3'}}>Drinks</Text>
+                    <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Drinks</Text>
                     <Ionicons name='chevron-down'style={{marginLeft : 'auto', fontSize : 15}}/>
                 </View>
 
@@ -180,7 +199,7 @@ const orderPage = () => {
 
 
                     <View style={styles.selectDiv}>
-                        <Text style={{fontFamily : 'Railway1'}}>Coke</Text>
+                        <Text style={{fontFamily : 'Railway1', fontSize : 12}}>Coke</Text>
                         <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate5}>
                             <View style={current5 ? styles.radioOuter : styles.radioNone}>
                                 <View style={current5 ? styles.radioInner : null}></View>
@@ -189,7 +208,7 @@ const orderPage = () => {
                     </View>
 
                     <View style={styles.selectDiv}>
-                        <Text style={{fontFamily : 'Railway1'}}>Fanta</Text>
+                        <Text style={{fontFamily : 'Railway1', fontSize : 12}}>Fanta</Text>
                         <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate6}>
                             <View style={current6 ? styles.radioOuter : styles.radioNone}>
                                 <View style={current6 ? styles.radioInner : null}></View>
@@ -203,27 +222,34 @@ const orderPage = () => {
         </View>
 
         <View>
-            <View style={{display : 'flex', flexDirection : 'row', paddingTop : 20, alignItems : 'center'}}>
+            <View style={{display : 'flex', flexDirection : 'row', paddingTop : 30, alignItems : 'center'}}>
 
-                <Text style={{fontFamily : 'Railway3', fontSize : 15,}}>Quantity</Text>
+                <Text style={{fontFamily : 'Railway3', fontSize : 13,}}>Quantity</Text>
 
-                <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', marginLeft : 'auto', gap : 20}}>
+                <View 
+                    style={{display : 'flex', 
+                        backgroundColor : Colors.myLightGray , 
+                        flexDirection : 'row', alignItems : 'center', 
+                        marginLeft : 'auto', gap : 20,
+                        borderRadius : 5, paddingHorizontal : 5,
+                        paddingVertical : 3
+                    }}>
 
                     <TouchableOpacity>
-                        <Ionicons name='remove' size={20}/>
+                        <AntDesign name='minus' size={15}/>
                     </TouchableOpacity>
 
-                    <Text style={{fontFamily : 'Railway3', fontSize : 25,}}>0</Text>
+                    <Text style={{fontSize : 20, padding : 0}}>0</Text>
 
                     <TouchableOpacity>
-                        <Ionicons name='add' size={20}/>
+                        <AntDesign name='plus' size={15}/>
                     </TouchableOpacity>
                 </View>
 
             </View>
 
             <TouchableOpacity style={styles.btnStyles} onPress={addToCart}>
-                <Text style={{color : 'white', fontSize : 15, fontFamily : 'Railway3'}}>Add N{cuisines.price}</Text>
+                <Text style={{color : 'white', fontSize : 13, fontWeight : 'bold'}}>Add N{cuisines.price}</Text>
             </TouchableOpacity>
         </View>
     </View>
@@ -243,8 +269,8 @@ const styles = StyleSheet.create({
         borderColor : Colors.myGray, 
         borderWidth : 1.5, 
         padding : 5, 
-        width : 20, 
-        height : 20, 
+        width : 15, 
+        height : 15, 
         borderRadius : 50,
         display : 'flex',
         justifyContent : 'center',
@@ -255,8 +281,8 @@ const styles = StyleSheet.create({
         borderColor : Colors.myRed, 
         borderWidth : 1.5, 
         padding : 5, 
-        width : 20, 
-        height : 20, 
+        width : 15, 
+        height : 15, 
         borderRadius : 50,
         display : 'flex',
         justifyContent : 'center',
@@ -265,8 +291,9 @@ const styles = StyleSheet.create({
     
     radioInner : {
         backgroundColor : Colors.myRed, 
-         padding : 6, 
-        width : 5, height : 5, 
+         padding : 4, 
+        width : 5, 
+        height : 5, 
         borderRadius : 50,
     },
 
@@ -274,25 +301,26 @@ const styles = StyleSheet.create({
         display : 'flex',
         flexDirection : 'row',
         alignItems :'center',
-        marginTop : 15
+        marginTop : 10
     },
 
     headStyle : {
         display : 'flex',
         flexDirection : 'row',
         backgroundColor : Colors.myLightGray,
-        padding : 5,
+        padding : 6,
         marginTop : 20,
-        borderRadius : 5
+        marginBottom : 6,
+        borderRadius : 2
     },
     btnStyles :{
-        height : 50,
+        height : 40,
         backgroundColor : Colors.myRed,
         flexDirection : 'row',
         alignItems : 'center',
         paddingHorizontal : 20,
         justifyContent : 'center',
-        borderRadius : 10,  
-        marginTop : 20,
+        borderRadius : 5,  
+        marginTop : 50,
     },
 })
