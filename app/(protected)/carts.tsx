@@ -6,11 +6,15 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { Link, useRouter } from 'expo-router'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
+import Modal from 'react-native-modal';
+import { Ionicons } from '@expo/vector-icons';
 
 const cart = () => {
 
       const [cartItems, setCartItems] = useState([])
       const [cartSingleItems, setCartSingleItems] = useState<any>([])
+
+      const [isLoading, setIsLoading] = useState(false)
 
       const router = useRouter();
 
@@ -48,10 +52,12 @@ const cart = () => {
 
     const deleteAll = () => {
       AsyncStorage.removeItem('cuisines');
-      AsyncStorage.removeItem('singleShopData');
+      setIsLoading(true)
       router.replace('/home')
     };
 
+
+    const [showModal2, setShowModal2] = useState<any>(false)
 
 
   return (
@@ -116,7 +122,7 @@ const cart = () => {
         <ScrollView style={styles.container3} showsVerticalScrollIndicator={false}>
 
           <View style={{display : 'flex', flexDirection : 'row', paddingBottom : 10}}>
-          <TouchableOpacity onPress={deleteAll} 
+          <TouchableOpacity onPress={()=>setShowModal2(true)} 
                 style={{backgroundColor : Colors.myLightGray, 
                   padding : 5, paddingHorizontal : 20, 
                   borderRadius : 5, 
@@ -165,6 +171,40 @@ const cart = () => {
 
       </ScrollView>
       )}
+
+
+      <Modal                 
+            isVisible={showModal2} backdropOpacity={0.30} 
+            animationIn={'slideInDown'} animationOut={'fadeOut'} 
+            animationInTiming={500} animationOutTiming={10}
+        >
+            <View style={styles.modalStyle2}>
+              <Ionicons name='notifications-circle' size={40} color={Colors.myGreen}/>
+                <Text style={{fontFamily : 'Railway1', fontSize : 15, paddingTop : 10}}>Are you sure you want to clear cart</Text>
+
+                <View style={{display : 'flex', flexDirection : 'row', gap : 10, marginVertical : 10}}>
+                    <TouchableOpacity onPress={deleteAll}
+                        style={{backgroundColor : Colors.myRed, 
+                            paddingHorizontal : 15, paddingVertical : 5, 
+                            marginTop : 15, borderRadius : 3,
+
+                        }}
+                    >
+                        <Text style={{fontSize : 13, fontFamily : 'Railway3', color : 'white'}}>Clear Cart</Text>
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity onPress={()=> setShowModal2(false)}
+                        style={{borderColor : Colors.myGray, borderWidth : 1, 
+                            paddingHorizontal : 15, paddingVertical : 5, 
+                            marginTop : 15, borderRadius : 3,
+                        }}
+                    >
+                        <Text style={{fontSize : 13, fontFamily : 'Railway1', color : Colors.myGreen}}>Cancle</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
     </SafeAreaView>
   )
 }
@@ -242,6 +282,18 @@ checkOutBtn : {
   borderRadius : 3,  
   marginTop : 5,
   width : '30%',
+},
+
+
+modalStyle2 : {
+  flex: 1,
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: 'white',
+  width: '100%',
+  maxHeight: '30%',
+  alignSelf : 'center',
+  borderRadius : 10,
 }
 
 

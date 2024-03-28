@@ -6,9 +6,11 @@ import Colors from '@/constants/Colors';
 import BackHeader from '@/components/BackHeader';
 import { useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 import { StatusBar } from 'expo-status-bar';
+import Modal from "react-native-modal";
+
 const orderPage = () => {
 
   
@@ -58,12 +60,12 @@ const orderPage = () => {
 
 
     const router = useRouter()
-
     const route = useRoute();
+
     const { cuisines, singleShopData } : any = route.params;
 
+    const [showModal2, setShowModal2] = useState<any>(false)
 
-    console.log('This is Single shop Data ............',singleShopData)
 
     const addToCart = async () => {
         try {
@@ -91,10 +93,7 @@ const orderPage = () => {
           await AsyncStorage.setItem('cuisines', JSON.stringify(updatedCart));
           await AsyncStorage.setItem('singleShopData', JSON.stringify(updatedData));
 
-          router.replace('/(protected)/carts')
-
-    
-          alert('Item added to cart!');
+          setShowModal2(true);
 
           console.log(existingCart);
           console.log(existingCart?.length)
@@ -252,6 +251,40 @@ const orderPage = () => {
                 <Text style={{color : 'white', fontSize : 13, fontWeight : 'bold'}}>Add N{cuisines.price}</Text>
             </TouchableOpacity>
         </View>
+
+
+        <Modal                 
+            isVisible={showModal2} backdropOpacity={0.30} 
+            animationIn={'slideInDown'} animationOut={'fadeOut'} 
+            animationInTiming={500} animationOutTiming={10}
+        >
+            <View style={styles.modalStyle2}>
+                <Image source={require('../../assets/images/succes2.png')} style={{width : 80, height : 80}}/>
+                <Text style={{fontFamily : 'Railway1', fontSize : 15, padding : 0}}>Product Added</Text>
+
+                <View style={{display : 'flex', flexDirection : 'row', gap : 10, marginVertical : 10}}>
+                    <TouchableOpacity onPress={()=>router.replace('/(protected)/carts')}
+                        style={{backgroundColor : Colors.myRed, 
+                            paddingHorizontal : 15, paddingVertical : 5, 
+                            marginTop : 15, borderRadius : 3,
+
+                        }}
+                    >
+                        <Text style={{fontSize : 13, fontFamily : 'Railway3', color : 'white'}}>Check out</Text>
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity onPress={()=> setShowModal2(false)}
+                        style={{borderColor : Colors.myGray, borderWidth : 1, 
+                            paddingHorizontal : 15, paddingVertical : 5, 
+                            marginTop : 15, borderRadius : 3,
+                        }}
+                    >
+                        <Text style={{fontSize : 13, fontFamily : 'Railway1', color : Colors.myGreen}}>Close</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
     </View>
   )
 }
@@ -323,4 +356,15 @@ const styles = StyleSheet.create({
         borderRadius : 5,  
         marginTop : 50,
     },
+
+    modalStyle2 : {
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: 'white',
+        width: '100%',
+        maxHeight: '30%',
+        alignSelf : 'center',
+        borderRadius : 10,
+    }
 })

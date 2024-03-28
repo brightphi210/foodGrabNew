@@ -32,14 +32,34 @@ const MainLayout = () => {
     } catch (e) {
       console.log(e)
     }
-};
+  };
 
-useEffect(() => {
-    getData();
-},[]);
+  useEffect(() => {
+      getData();
+  },[]);
 
 
-// alert(seenScreen)
+  let [verified, setVerified] = useState<any>(null)
+  const getVerifiedData = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('data');
+        if(jsonValue){
+          let newVerified = JSON.parse(jsonValue)
+          setVerified(newVerified.data.emailVerificationStatus)
+        }
+
+        console.log(jsonValue)
+    } catch (e) {
+      console.log(e)
+    }
+  };
+
+  useEffect(() => {
+    getVerifiedData();
+  },[]);
+
+
+console.log(typeof(verified))
 
   useEffect(()=>{
     if(typeof isAuthenticated == 'undefined') return 
@@ -53,17 +73,25 @@ useEffect(() => {
       router.replace('/public/welcome_one')
     }
 
+    else if(verified !== 'VERIFIED' && (isAuthenticated === true || seenScreen !== null)){
+      router.replace('/otp_verification')
+    }
+
     else if(isAuthenticated && !inApp ){
-      // router.replace('/authRoute/home_dash')
+      router.replace('/authRoute/home_dash')
       // router.replace('/home')
-      router.replace('/account')
+      // router.replace('/register')
+      // router.replace('/account')
       // router.replace('/carts')
       // router.replace('/authRoute/(profile)/personal')
       // router.replace('/authRoute/(profile)/wallet')
       // router.replace('/authRoute/(profile)/FAQs')
+      // router.replace('/authRoute/(profile)/support')
       // router.replace('/authRoute/proceed_checkout')
       // router.replace('/authRoute/order_summary')
       // router.replace('/public/welcome_one')
+      // router.replace('/public/welcome_one')
+      // router.replace('/otp_verification')
     }else if(isAuthenticated == false ){
       router.replace('/login')
     }

@@ -130,7 +130,8 @@ const account = () => {
 
 
 
-            <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomColor : Colors.myGray, borderBottomWidth : 1, paddingBottom : 10 }}>
+            <TouchableOpacity onPress={()=>router.navigate('authRoute/(profile)/support')}
+              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomColor : Colors.myGray, borderBottomWidth : 1, paddingBottom : 10 }}>
               <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
                 <Feather name="phone" size={15} color={Colors.myRed} />
                 <Text style={{ fontSize: 15, color: "#606060", fontFamily : 'Railway3'}}>Support</Text>

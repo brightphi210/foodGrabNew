@@ -21,7 +21,7 @@ const register = () => {
     const [isModalOpen1, setIsModalOpen1] = useState(false)
     const [isModalOpen2, setIsModalOpen2] = useState(false)
 
-    const [isChecked, setChecked] = useState(false);
+    const [isChecked, setChecked] = useState<any>(false);
     const [showPassword, setShowPassword] = useState<any>('');
     const [showPassword1, setShowPassword1] = useState<any>('');
 
@@ -98,12 +98,12 @@ const register = () => {
 
             const data = response;
             
-            await AsyncStorage.setItem('user', JSON.stringify(data));
+            await AsyncStorage.setItem('user', JSON.stringify(data.data));
             setStatusMessage(response.data.mssg);
             setIsLoading(false)
             setIsModalOpen2(true)
             if (response.data.status === 'SUCCESS'){
-                navigation.replace('/login')
+                navigation.replace('/otp_verification')
             }
 
 

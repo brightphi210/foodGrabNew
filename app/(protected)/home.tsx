@@ -107,12 +107,12 @@ const index = () => {
               
             <View style={{display : 'flex', flexDirection : 'row', gap : 10, paddingTop : 0, paddingHorizontal : 10}}>
               <TouchableOpacity style={show ? styles.btnStyle1 : styles.btnStyle} onPress={hideAndShowOne}>
-                <Ionicons name='fast-food' color={show ? Colors.btnGreen  : 'white' } size={16}/>
+                <Ionicons name='fast-food' color={show ? Colors.btnGreen  : 'white' } size={15}/>
                 <Text style={show ? styles.btnText1 : styles.btnText}>Restaurant</Text>
               </TouchableOpacity>
 
               <TouchableOpacity style={show ? styles.btnStyle : styles.btnStyle1} onPress={hideAndShowTwo}>
-                <Ionicons name='restaurant' size={16} color={!show ? Colors.btnGreen  : 'white' }/>
+                <Ionicons name='restaurant' size={15} color={!show ? Colors.btnGreen  : 'white' }/>
                 <Text style={show ? styles.btnText : styles.btnText1}>Private Chef</Text>
               </TouchableOpacity>
             
@@ -346,7 +346,7 @@ const styles = StyleSheet.create({
     flexDirection : 'row',
     width : '50%',
     alignItems : 'center',
-    padding : 12,
+    padding : 10,
     alignSelf : 'center',
     justifyContent : 'center',
     borderRadius : 50,
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     alignItems : 'center',
     borderColor : Colors.btnGreen,
     borderWidth : 1,
-    padding : 12,
+    padding : 10,
     textAlign : 'center',
     justifyContent : 'center',
     borderRadius : 50,
