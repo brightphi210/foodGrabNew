@@ -44,7 +44,9 @@ const DashHeader = () => {
         </TouchableOpacity>
 
         <View style={{marginLeft : 'auto'}}>
-            <Ionicons name='notifications-outline' size={20}/>
+            <TouchableOpacity onPress={()=>router.push('/authRoute/notification')}>
+              <Ionicons name='notifications-outline' size={20}/>
+            </TouchableOpacity>
         </View>
    </SafeAreaView>
   )
