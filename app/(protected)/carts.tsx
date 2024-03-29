@@ -31,6 +31,9 @@ const cart = () => {
     },[]);
 
 
+    console.log(cartItems)
+
+
     const deleteAll = () => {
       AsyncStorage.removeItem('cuisines');
       setIsLoading(true)
@@ -43,6 +46,7 @@ const cart = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      
       <StatusBar style='dark'/>
 
       <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
@@ -126,7 +130,7 @@ const cart = () => {
                 <View style={styles.cartRight}>
                   <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 50}}>
                     <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{cartItem.cuisines.name}</Text> 
-                    <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray', paddingLeft : 60}}>3 Items</Text>
+                    <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray', paddingLeft : 40}}>3 Items</Text>
                   </View>
                   <Text style={{ fontFamily: 'Railway1', fontSize: 12, paddingVertical: 6, color: Colors.myGreen }}>Chiken Republic</Text>
                 </View>

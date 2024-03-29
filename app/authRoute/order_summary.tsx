@@ -111,9 +111,6 @@ const order_summary = () => {
           </View>
         </View>
 
-        <View style={styles.grayBG}>
-          <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Payment Option</Text>
-        </View>
 
         <View style={styles.bottomBtns} >
 
