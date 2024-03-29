@@ -115,27 +115,6 @@ const order_summary = () => {
           <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Payment Option</Text>
         </View>
 
-        <View style={{}}>
-            <View style={{paddingTop : 15}}>
-              <Text style={{fontFamily : 'Railway1', fontSize : 11, paddingBottom : 5, color : 'gray' }}>Wallet</Text>
-              <View style={styles.selectDiv}>
-
-                  <View style={{display : 'flex', flexDirection :'row', gap : 5, alignItems : 'center'}}>
-                      <Ionicons name='wallet-outline' size={15} color={Colors.myLightGreen}/>
-                      <Text style={{ color : Colors.myGreen, fontSize : 13, fontWeight : 'bold'}}>N 10,577.00</Text>
-                  </View>
-
-                  <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate1}>
-                      <View style={current1 ? styles.radioOuter : styles.radioNone}>
-                          <View style={current1 ? styles.radioInner : null}></View>
-                      </View>
-                  </TouchableOpacity>
-
-              </View>
-            </View>
-          
-        </View>
-
         <View style={styles.bottomBtns} >
 
           <TouchableOpacity style={styles.eachBottomBtn} onPress={()=>router.push('/authRoute/prefered_payment')}>
