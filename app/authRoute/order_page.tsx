@@ -77,21 +77,8 @@ const orderPage = () => {
           }
     
           updatedCart.push({ cuisines });
-    
-
-
-          const existingCart2 = await AsyncStorage.getItem('singleShopData');
-          let updatedData = []
-
-
-          if (existingCart2 !== null) {
-            updatedData = JSON.parse(existingCart2);
-          }
-          updatedData.push({singleShopData})
-
 
           await AsyncStorage.setItem('cuisines', JSON.stringify(updatedCart));
-          await AsyncStorage.setItem('singleShopData', JSON.stringify(updatedData));
 
           setShowModal2(true);
 
@@ -264,23 +251,25 @@ const orderPage = () => {
 
                 <View style={{display : 'flex', flexDirection : 'row', gap : 10, marginVertical : 10}}>
                     <TouchableOpacity onPress={()=>router.replace('/(protected)/carts')}
+                        style={{borderColor : Colors.myGray, borderWidth : 1, 
+                            paddingHorizontal : 15, paddingVertical : 5, 
+                            marginTop : 15, borderRadius : 3,
+                        }}
+                    >
+                        <Text style={{  fontSize : 13, fontFamily : 'Railway1', color : Colors.myGreen}}>Check out</Text>
+                    </TouchableOpacity>
+
+
+                    <TouchableOpacity onPress={()=> setShowModal2(false)}
+     
+
                         style={{backgroundColor : Colors.myRed, 
                             paddingHorizontal : 15, paddingVertical : 5, 
                             marginTop : 15, borderRadius : 3,
 
                         }}
                     >
-                        <Text style={{fontSize : 13, fontFamily : 'Railway3', color : 'white'}}>Check out</Text>
-                    </TouchableOpacity>
-
-
-                    <TouchableOpacity onPress={()=> setShowModal2(false)}
-                        style={{borderColor : Colors.myGray, borderWidth : 1, 
-                            paddingHorizontal : 15, paddingVertical : 5, 
-                            marginTop : 15, borderRadius : 3,
-                        }}
-                    >
-                        <Text style={{fontSize : 13, fontFamily : 'Railway1', color : Colors.myGreen}}>Close</Text>
+                        <Text style={{fontSize : 13, fontFamily : 'Railway3', color : 'white' }}>Close</Text>
                     </TouchableOpacity>
                 </View>
             </View>

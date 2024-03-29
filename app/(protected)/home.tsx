@@ -11,6 +11,7 @@ import { AuthContext } from '@/context/AuthContext';
 import { BASE_URL } from '@/Enpoints/Endpoint';
 import DashHeader from '@/components/DashHeader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader2 from '@/components/Loader2';
 
 
 
@@ -267,7 +268,10 @@ const index = () => {
 
                   {isLoading || !shopData ? 
                   
-                  (<ActivityIndicator style={{paddingTop : 100}} size={'large'}/> )
+                  (
+                  // <ActivityIndicator style={{paddingTop : 100}} size={'large'}/> 
+                  <Loader2 />
+                  )
 
                   : (
 

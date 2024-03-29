@@ -10,6 +10,9 @@ import { ActivityIndicator } from 'react-native';
 import BackHeader from '@/components/BackHeader';
 import { useNavigation } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loader from '@/components/Loader';
+
 
 const resturantPage = () => {
 
@@ -21,9 +24,27 @@ const resturantPage = () => {
     const [singleShopData, setSingleShopData] = useState<any>({})
     const [cuisines, setCuisines] = useState<any>([])
 
-    const { userToken } = useContext(AuthContext)
 
     const [isLoading, setIsLoading] = useState(false)
+
+
+    const [userToken, setUserToken] = useState(null);
+    const getData = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('token');
+        if (storedToken) {
+          setUserToken(JSON.parse(storedToken));
+        } 
+      } catch (e) {
+        console.error('Error retrieving authentication data:', e);
+      }
+    };
+  
+    useEffect(() => {
+      getData();
+    }, []);
+
+
 
 
   const fetchData = async () => {
@@ -39,17 +60,16 @@ const resturantPage = () => {
       });
       const myData = await res.json();
 
-      console.log(myData)
+      // console.log(myData)
       setIsLoading(false);
 
-      // setIsLoading(true);
       setSingleShopData(myData.data);
       setCuisines(myData.data.cuisines)
 
 
     } catch (error) {
       setIsLoading(false);
-      console.error(error);
+      console.log('There was an error fetching token');
     }
   };
 
@@ -61,13 +81,13 @@ const resturantPage = () => {
 
 
 
+
   const navigate = useNavigation<any>()
 
-  const handleProductPress = (cuisines : any, singleShopData : any) => {
-    navigate.navigate('authRoute/order_page', { cuisines, singleShopData })
+  const handleProductPress = (cuisines : any) => {
+    navigate.navigate('authRoute/order_page', { cuisines })
   };
 
-  // console.log(singleShopData)
  
 
   return (
@@ -76,96 +96,107 @@ const resturantPage = () => {
         <BackHeader />
         <StatusBar style='dark'/>
 
-        {isLoading  && <ActivityIndicator size={'large'} style={{flex : 1, justifyContent : 'center', alignItems : 'center'}}/>}
-        <View>
-              <View style={{display : 'flex', flexDirection : 'row', paddingBottom : 10}}>
-                  <Text style={{ fontFamily : 'Railway2', fontSize : 17, }}>{singleShopData.shopName}</Text>
-                  <Text style={{marginLeft : 'auto', fontFamily : 'Railway1'}}>Open till 06:300 pm</Text>
-              </View>
-              <Image source={require('../../assets/images/rest1.png')}
-                  resizeMode='cover'
-                  style={{width : '100%', height : 100,
-                  borderRadius : 5
-              }}
-              />
-
-
-              <View style={{display :'flex', 
-                  flexDirection : 'row', 
-                  justifyContent : 'space-between', 
-                  width : '100%',
-                  paddingTop : 10,
-                  borderBottomColor : Colors.myGray,
-                  borderBottomWidth : 1,
-                  paddingBottom : 10,
-              }}>
-                  <View style={{borderRightColor : Colors.myGray, borderRightWidth : 1, paddingRight : 20}}>
-                      <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Preparation Time</Text>
-                      <Text style={{fontFamily : 'Railway3', }}>5-20 minutes</Text>
-                  </View>
-
-                  <View style={{borderRightColor : Colors.myGray, borderRightWidth : 1, paddingRight : 20}}>
-                      <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Delivery Type</Text>
-                      <Text style={{fontFamily : 'Railway3', }}>Instant Delivery</Text>
-                  </View>
-
-                  <View style={{}}>
-                      <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Rating</Text>
-                      <Text style={{fontFamily : 'Railway3', }}>5.0 (123)</Text>
-                  </View>
-              </View>
-
-              <View style={{display : 'flex', flexDirection :'row', paddingVertical : 20, gap : 10}}>
-
-                  <TouchableOpacity style={styles.btnStyle}>
-                      <Text style={styles.btnText}>All</Text>
-                  </TouchableOpacity>
-
-
-                  <TouchableOpacity style={styles.btnStyle1}>
-                      <Text style={styles.btnText1}>What’s New</Text>
-                  </TouchableOpacity>
-
-              </View>
-
-              <ScrollView style={{paddingVertical : 10, height : '60%'}} showsVerticalScrollIndicator ={false}>
-
-                      {cuisines.map((eachCuisines:any, index:any)=>(
-                      <TouchableOpacity key={index} onPress={() => handleProductPress(eachCuisines, singleShopData)}>
-                      <View style={{display : 'flex', 
-                          flexDirection : 'row', gap : 10, 
-                          justifyContent : 'center', 
-                          alignItems : 'center', 
-                          borderBottomColor : Colors.myGray,
-                          borderBottomWidth : 1,
-                          paddingBottom : 15,
-                          marginBottom : 15,
-                      }}>
-
-                          <Image source={require('../../assets/images/imgFood4.png')}
-                          style={{width : 70, height : 70, borderRadius : 5}}
-                          />
-
-                          <View style={{width : '75%'}}>
-                          <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
-                              <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{eachCuisines.name}</Text>
-                          </View>
-
-                          <Text style={{fontFamily : 'Railway1', 
-                              fontSize : 12, color : 'gray', paddingVertical : 5,
-                              textAlign : 'justify'
-                          }}>
-                              {eachCuisines.description}
-                          </Text>
-                          <Text style={{fontFamily : 'Railway1', color : Colors.btnGreen}}>From N{eachCuisines.price}</Text>
-                          </View>
-
-                      </View>
-                      </TouchableOpacity>
-                      ))}
-                            
-              </ScrollView>
+        {isLoading || singleShopData === null || singleShopData === undefined   ? 
+          <Loader />
+          :
+          <View>
+          <View style={{display : 'flex', flexDirection : 'row', paddingBottom : 10}}>
+              <Text style={{ fontFamily : 'Railway2', fontSize : 17, }}>{singleShopData.shopName}</Text>
+              <Text style={{marginLeft : 'auto', fontFamily : 'Railway1'}}>Open till 06:300 pm</Text>
           </View>
+          <Image source={require('../../assets/images/rest1.png')}
+              resizeMode='cover'
+              style={{width : '100%', height : 100,
+              borderRadius : 5
+          }}
+          />
+
+
+          <View style={{display :'flex', 
+              flexDirection : 'row', 
+              justifyContent : 'space-between', 
+              width : '100%',
+              paddingTop : 10,
+              borderBottomColor : Colors.myGray,
+              borderBottomWidth : 1,
+              paddingBottom : 10,
+          }}>
+              <View style={{borderRightColor : Colors.myGray, borderRightWidth : 1, paddingRight : 20}}>
+                  <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Preparation Time</Text>
+                  <Text style={{fontFamily : 'Railway3', }}>5-20 minutes</Text>
+              </View>
+
+              <View style={{borderRightColor : Colors.myGray, borderRightWidth : 1, paddingRight : 20}}>
+                  <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Delivery Type</Text>
+                  <Text style={{fontFamily : 'Railway3', }}>Instant Delivery</Text>
+              </View>
+
+              <View style={{}}>
+                  <Text style={{fontFamily : 'Railway1', fontSize : 12, color : 'gray'}}>Rating</Text>
+                  <Text style={{fontFamily : 'Railway3', }}>5.0 (123)</Text>
+              </View>
+          </View>
+
+          <View style={{display : 'flex', flexDirection :'row', paddingVertical : 20, gap : 10}}>
+
+              <TouchableOpacity style={styles.btnStyle}>
+                  <Text style={styles.btnText}>All</Text>
+              </TouchableOpacity>
+
+
+              <TouchableOpacity style={styles.btnStyle1}>
+                  <Text style={styles.btnText1}>What’s New</Text>
+              </TouchableOpacity>
+
+          </View>
+
+
+          
+
+          <ScrollView style={{paddingVertical : 10, height : '60%'}} showsVerticalScrollIndicator ={false}>
+
+                {cuisines === undefined || cuisines === null ? <ActivityIndicator size={'large'}/> : (
+                  <>
+                  {cuisines.map((eachCuisines:any, index:any)=>(
+                  <TouchableOpacity key={index} onPress={() => handleProductPress(eachCuisines)}>
+                  <View style={{display : 'flex', 
+                      flexDirection : 'row', gap : 10, 
+                      justifyContent : 'center', 
+                      alignItems : 'center', 
+                      borderBottomColor : Colors.myGray,
+                      borderBottomWidth : 1,
+                      paddingBottom : 15,
+                      marginBottom : 15,
+                  }}>
+
+                      <Image source={require('../../assets/images/imgFood4.png')}
+                      style={{width : 70, height : 70, borderRadius : 5}}
+                      />
+
+                      <View style={{width : '75%'}}>
+                      <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
+                          <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{eachCuisines.name}</Text>
+                      </View>
+
+                      <Text style={{fontFamily : 'Railway1', 
+                          fontSize : 12, color : 'gray', paddingVertical : 5,
+                          textAlign : 'justify'
+                      }}>
+                          {eachCuisines.description}
+                      </Text>
+                      <Text style={{fontFamily : 'Railway1', color : Colors.btnGreen}}>From N{eachCuisines.price}</Text>
+                      </View>
+
+                  </View>
+                  </TouchableOpacity>
+                  ))}
+                  </>
+                )}
+                        
+          </ScrollView>
+          </View>
+        }
+
 
     </View>
   )

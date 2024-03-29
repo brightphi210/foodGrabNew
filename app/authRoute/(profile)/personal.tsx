@@ -56,7 +56,7 @@ const personal = () => {
         getData();
     },[]);
 
-    console.log(userDetails)
+    // console.log(userDetails)
 
   return (
     <View style={styles.container}>

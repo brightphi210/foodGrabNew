@@ -1,4 +1,4 @@
-import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, TouchableNativeFeedback } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, Image, TouchableOpacity, TouchableNativeFeedback, ScrollView } from 'react-native'
 import React from 'react'
 import Colors from '@/constants/Colors';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -6,6 +6,7 @@ import DashHeader from '@/components/DashHeader';
 import { Link, useRouter } from 'expo-router'
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { FontAwesome } from '@expo/vector-icons';
 
 
 // import DashHeader from '../../components/DashHeader';
@@ -29,9 +30,9 @@ const index = () => {
       <StatusBar style='dark'/>
         <DashHeader />
 
-        <TouchableOpacity onPress={deleteSeenScreen}>
+        {/* <TouchableOpacity onPress={deleteSeenScreen}>
           <Text style={{fontSize : 20, paddingTop : 20}}>Remove Screen</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         
         <View>
 
@@ -43,7 +44,40 @@ const index = () => {
               </View>
 
 
-            <View style={{display: 'flex', paddingTop : 20, paddingHorizontal : 10, flexDirection : 'row', alignItems : 'center', justifyContent : 'center', gap : 10}}>
+              <ScrollView 
+                horizontal 
+                showsHorizontalScrollIndicator={false} 
+                style={{display : 'flex', gap : 10, flexDirection : 'row', height : 0}}
+              >
+                <View style={{
+                    display : 'flex', backgroundColor : Colors.myLightPink, 
+                    borderRadius : 100, flexDirection : 'row',
+                    padding : 5, paddingHorizontal : 20, gap : 10, height : 26,
+                    marginRight : 10, 
+                  }}
+                >
+                  <TouchableOpacity style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 5}}>
+                    <Ionicons name='wallet-outline' size={12}/>
+                    <Text style={{fontSize : 11, fontFamily : 'Railway1'}}>Food Grab Wallet coming soon</Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{
+                    display : 'flex', backgroundColor : Colors.myLightGray, 
+                    borderRadius : 100, flexDirection : 'row',
+                    padding : 5, paddingHorizontal : 20, gap : 10, height : 26,
+                    marginRight : 10, 
+                  }}
+                >
+                  <TouchableOpacity style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 5}}>
+                    <Ionicons name='fast-food-outline' size={12}/>
+                    <Text style={{fontSize : 11, fontFamily : 'Railway1'}}>Get the best food here</Text>
+                  </TouchableOpacity>
+                </View>
+
+              </ScrollView>
+
+            <View style={{display: 'flex', paddingTop : 10, paddingHorizontal : 10, flexDirection : 'row', alignItems : 'center', justifyContent : 'center', gap : 10}}>
               
               
 
@@ -88,7 +122,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor : 'white',
-        paddingTop :50,
+        paddingTop : 20,
         paddingHorizontal: 20
     },
 

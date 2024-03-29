@@ -48,7 +48,7 @@ const MainLayout = () => {
           setVerified(newVerified.data.emailVerificationStatus)
         }
 
-        console.log(jsonValue)
+        // console.log(jsonValue)
     } catch (e) {
       console.log(e)
     }
@@ -59,7 +59,7 @@ const MainLayout = () => {
   },[]);
 
 
-console.log(typeof(verified))
+// console.log(typeof(verified))
 
   useEffect(()=>{
     if(typeof isAuthenticated == 'undefined') return 
@@ -79,7 +79,7 @@ console.log(typeof(verified))
 
     else if(isAuthenticated && !inApp ){
       router.replace('/authRoute/home_dash')
-      // router.replace('/home')
+      router.replace('/home')
       // router.replace('/register')
       // router.replace('/account')
       // router.replace('/carts')

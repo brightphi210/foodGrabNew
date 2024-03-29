@@ -69,8 +69,7 @@ const register = () => {
             setIsLoading(false);
           }
         } catch (error) {
-          console.error('Login error:', error);
-          alert('Login failed. Please check your credentials or try again later.');
+          alert('Invalid login details: ');
           setIsLoading(false);
         }
       };

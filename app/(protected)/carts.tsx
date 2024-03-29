@@ -12,7 +12,6 @@ import { Ionicons } from '@expo/vector-icons';
 const cart = () => {
 
       const [cartItems, setCartItems] = useState([])
-      const [cartSingleItems, setCartSingleItems] = useState<any>([])
 
       const [isLoading, setIsLoading] = useState(false)
 
@@ -30,24 +29,6 @@ const cart = () => {
     useEffect(() => {
         getData();
     },[]);
-
-
-    const getData2 = async () => {
-      try {
-        const jsonValue2 = await AsyncStorage.getItem('singleShopData');
-        return setCartSingleItems(jsonValue2 != null ? JSON.parse(jsonValue2) : null);
-      } catch (e) {
-        console.log(e)
-      }
-  };
-
-  useEffect(() => {
-      getData2();
-  },[]);
-
-
-
-  // console.log(cartSingleItems)
 
 
     const deleteAll = () => {
