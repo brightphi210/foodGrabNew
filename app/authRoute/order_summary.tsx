@@ -133,23 +133,6 @@ const order_summary = () => {
 
               </View>
             </View>
-
-            <View style={{paddingTop : 15}}>
-              <Text style={{fontFamily : 'Railway1', fontSize : 11, paddingBottom : 5, color : 'gray' }}>Pay With Card</Text>
-                <View style={styles.selectDiv}>
-
-                    <View style={{display : 'flex', flexDirection :'row', gap : 5, alignItems : 'center'}}>
-                        <Ionicons name='card-outline' size={15} color={Colors.myLightGreen}/>
-                        <Text style={{ color : Colors.myGreen, fontSize : 13, fontWeight : 'bold'}}>N 4,650.00</Text>
-                    </View>
-
-                    <TouchableOpacity style={{marginLeft : 'auto'}} onPress={activate2}>
-                        <View style={current2 ? styles.radioOuter : styles.radioNone}>
-                            <View style={current2 ? styles.radioInner : null}></View>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
           
         </View>
 
