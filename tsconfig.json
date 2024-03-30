@@ -13,5 +13,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-, "context/AuthContext.js", "app/index.js"  ]
+, "context/AuthContext.js", "app/index.js", "app/authRoute/payment.js", "app/authRoute/prefered_payment.jsx"  ]
 }

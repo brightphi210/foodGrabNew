@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput } from 'react-native'
-import React, {useState} from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, ScrollView } from 'react-native'
+import React, {useEffect, useState} from 'react'
 import Colors from '@/constants/Colors';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -7,9 +7,14 @@ import { Link, useRouter } from 'expo-router'
 import { useNavigation } from 'expo-router';
 import BackHeader from '@/components/BackHeader';
 import { StatusBar } from 'expo-status-bar';
+import {PayWithFlutterwave} from 'flutterwave-react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 const order_summary = () => {
 
   const navigate = useNavigation()
+  
   const router = useRouter()
   const [current1, setCurrent1] = useState(true);
   const [current2, setCurrent2] = useState(false);
@@ -53,30 +58,106 @@ const order_summary = () => {
       setCurrent6(true);
   }
 
+
+  const [userDetails, setUserDetails] = useState<any>({})
+
+  const getUserData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('data');
+        const newJsonValue = (jsonValue != null ? JSON.parse(jsonValue) : null)
+
+        return setUserDetails(newJsonValue.data);
+      } catch (e) {
+        console.log(e)
+      }
+  };
+
+  useEffect(() => {
+      getUserData();
+  },[]);
+
+  const [cartItems, setCartItems] = useState([])
+
+  const [isLoading, setIsLoading] = useState(false)
+
+
+  const getData = async () => {
+      try {
+        const jsonValue = await AsyncStorage.getItem('cuisines');
+        return setCartItems(jsonValue != null ? JSON.parse(jsonValue) : null);
+      } catch (e) {
+        console.log(e)
+      }
+  };
+
+  useEffect(() => {
+      getData();
+  },[]);
+
+
+  const userEmail = userDetails.email;
+
+  const sumTotalPrice = cartItems.reduce((total:any, product:any) => total + product.cuisines.price, 0);
+  const newTotalPrice = sumTotalPrice.toLocaleString()
+  const percentage = sumTotalPrice * 0.03
+  const grandTotalPrice = (sumTotalPrice + percentage)
+
+  console.log(percentage)
+
+  interface RedirectParams {
+    status: 'successful' | 'cancelled';
+    transaction_id?: string;
+    tx_ref: string;
+  }
+
+    const handleOnRedirect = (data: RedirectParams) => {
+      if(data.status === 'successful'){
+          router.replace('/authRoute/order_status')
+        }
+    };
+
+    const generateTransactionRef = (length: number) => {
+    var result = '';
+    var characters =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return `flw_tx_ref_${result}`;
+    };
+
+
   return (
     <View style={styles.container}>
       <StatusBar style='dark'/>
       <BackHeader />
-      <Text style={{fontFamily : 'Railway2', fontSize : 15}}>Checkout</Text>
+      <Text style={{fontFamily : 'Railway2', fontSize : 15, paddingBottom : 20}}>Checkout</Text>
 
-      <View>
+      <ScrollView  showsVerticalScrollIndicator={false}>
         <View style={styles.grayBG}>
           <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Order Summary</Text>
         </View>
-        <View style={{display : 'flex', flexDirection : 'row', borderBottomWidth : 1, borderBottomColor : Colors.myGray, paddingVertical : 20}}>
+
+        {cartItems.map((cartItem : any, index: any) =>(
+
+        <View key={index} style={{display : 'flex', flexDirection : 'row', borderBottomWidth : 1, borderBottomColor : Colors.myGray, paddingVertical : 20}}>
           <View style={{display : 'flex', flexDirection : 'row', gap : 10}}>
-            <View style={{width : 65, height : 50, overflow : 'hidden', borderRadius : 5}}>
-              <Image source={require('../../assets/images/imgFood2.png')} style={{width  : 70, height : 70}}/>
+            <View style={{width : 50, height : 40, overflow : 'hidden', borderRadius : 5}}>
+              <Image source={require('../../assets/images/imgFood2.png')} style={{width  : 60, height : 60}}/>
             </View>
 
             <View>
-              <Text style={{fontFamily : 'Railway2', fontSize : 18}}>Belle Combo</Text>
+              <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{cartItem.cuisines.name}</Text>
               <Text style={{fontFamily : 'Railway3', color : Colors.myLightGreen, fontSize : 11, paddingTop : 6}}>Kilimajaro - Big Tree</Text>
             </View>
           </View>
 
           <Text style={{marginLeft : 'auto', color : 'gray', fontFamily : 'Railway1', fontSize : 12}}>View Selection</Text>
         </View>
+        ))}
+
+
 
         <View style={{paddingTop : 10}}>
           <Text style={{fontFamily : 'Railway1', fontSize : 11, color : 'grey', paddingBottom : 5}}>Delivery Address</Text>
@@ -85,14 +166,20 @@ const order_summary = () => {
           </View>
         </View>
 
+
+
+
+
         <View style={styles.grayBG}>
           <Text style={{fontFamily : 'Railway3', fontSize : 13}}>Payment Summary</Text>
         </View>
 
         <View style={{paddingTop : 10}}>
           <View style={styles.paymentDiv}>
-            <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Sub-Total  (3 Items)</Text>
-            <Text style={{marginLeft : 'auto', fontWeight : '500', fontSize : 13}}>N3,700.00</Text>
+            {cartItems && (
+              <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Sub-Total  ({cartItems.length} Items)</Text>
+            )}
+            <Text style={{marginLeft : 'auto', fontWeight : '500', fontSize : 13}}>N{newTotalPrice}</Text>
           </View>
 
           <View style={styles.paymentDiv}>
@@ -102,21 +189,38 @@ const order_summary = () => {
 
           <View style={styles.paymentDiv}> 
             <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Booking Fee</Text>
-            <Text style={{marginLeft : 'auto', fontWeight : '500', fontSize : 13}}>N3,700.00</Text>
+            <Text style={{marginLeft : 'auto', fontWeight : '500', fontSize : 13}}>N{percentage}</Text>
           </View>
 
           <View style={styles.paymentDiv}>
             <Text style={{fontFamily : 'Railway3', color : Colors.myRed}}>Total</Text>
-            <Text style={{marginLeft : 'auto', fontWeight : '500', fontSize : 13, color : Colors.myRed}}>N3,700.00</Text>
+            <Text style={{marginLeft : 'auto', fontWeight : '500', fontSize : 13, color : Colors.myRed}}>N{grandTotalPrice.toLocaleString()}</Text>
           </View>
         </View>
 
 
         <View style={styles.bottomBtns} >
 
-          <TouchableOpacity style={styles.eachBottomBtn} onPress={()=>router.push('/authRoute/prefered_payment')}>
-              <Text style={{fontFamily : 'Railway2', fontSize : 13, color : 'white'}}>Place Order</Text>
-          </TouchableOpacity>
+        <PayWithFlutterwave
+
+            onRedirect={handleOnRedirect}
+            options={{
+                tx_ref: generateTransactionRef(10),
+                authorization: "FLWPUBK_TEST-1846f466dad001520b9bf6345d69c9cb-X",
+                customer: {
+                email: userEmail,
+                },
+                amount: grandTotalPrice,
+                currency: 'NGN',
+                payment_options: 'card'
+            }}
+            customButton={(props : any) => (
+                <TouchableOpacity style={styles.eachBottomBtn} onPress={props.onPress} disabled={props.disabled}>
+                    <Text style={{fontFamily : 'Railway2', fontSize : 15, color : 'white'}}>Make Payment</Text>
+                </TouchableOpacity>
+
+            )}
+        />
 
           <TouchableOpacity style={styles.eachBottomBtn2} onPress={navigate.goBack}>
               <Text style={{fontFamily : 'Railway2', fontSize : 13, color : Colors.myRed}}>Cancel Order</Text>
@@ -124,7 +228,7 @@ const order_summary = () => {
         </View>
 
 
-      </View>
+      </ScrollView>
     </View>
   )
 }
@@ -234,20 +338,17 @@ eachBtn : {
 
 bottomBtns: {
     display : 'flex',
-    flexDirection : 'row',
-    alignItems : 'center',
-    justifyContent : 'center',
-    alignSelf : 'center',
-    margin : 'auto',
-    paddingTop : 10, 
+    flexDirection : 'column',
+    paddingTop : 30, 
     gap : 10,
-    paddingHorizontal : 10
+    paddingHorizontal : 10,
+    marginBottom : 30
 },
 
 
 eachBottomBtn : {
-    width : '50%',
-    padding : 10,
+    width : '100%',
+    padding : 15,
     alignItems : 'center',
     backgroundColor : Colors.myRed, 
     marginTop : 10,
@@ -255,8 +356,8 @@ eachBottomBtn : {
 },
 
 eachBottomBtn2 : {
-    width : '50%',
-    padding : 10,
+    width : '100%',
+    padding : 15,
     alignItems : 'center',
     borderColor : Colors.myRed, 
     borderWidth : 1,
