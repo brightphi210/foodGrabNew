@@ -96,8 +96,9 @@ const order_summary = () => {
 
 
   const userEmail = userDetails.email;
+  // const [subTotal, setSubTotal] = useState(null)
 
-  const sumTotalPrice = cartItems.reduce((total:any, product:any) => total + product.cuisines.price, 0);
+  const sumTotalPrice = cartItems.reduce((total:any, product:any) => total + (product.price * product.quantity), 0);
   const newTotalPrice = sumTotalPrice.toLocaleString()
   const percentage = sumTotalPrice * 0.03
   const grandTotalPrice = (sumTotalPrice + percentage)
@@ -148,12 +149,15 @@ const order_summary = () => {
             </View>
 
             <View>
-              <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{cartItem.cuisines.name}</Text>
+              <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{cartItem.name}</Text>
               <Text style={{fontFamily : 'Railway3', color : Colors.myLightGreen, fontSize : 11, paddingTop : 6}}>Kilimajaro - Big Tree</Text>
             </View>
           </View>
 
-          <Text style={{marginLeft : 'auto', color : 'gray', fontFamily : 'Railway1', fontSize : 12}}>View Selection</Text>
+          <View style={{marginLeft : 'auto',}}>
+            <Text style={{ color : 'gray', fontSize : 12}}>{cartItem.quantity} Items</Text>
+            <Text style={{ color : 'gray', fontFamily : 'Railway1', fontSize : 12}}>View Selection</Text>
+          </View>
         </View>
         ))}
 
@@ -177,7 +181,9 @@ const order_summary = () => {
         <View style={{paddingTop : 10}}>
           <View style={styles.paymentDiv}>
             {cartItems && (
-              <Text style={{fontFamily : 'Railway1', fontSize : 13, color : 'gray'}}>Sub-Total  ({cartItems.length} Items)</Text>
+              <View>
+                  <Text style={{fontSize : 13, color : 'gray'}}>Sub-Total {cartItems.length} (Items)</Text>
+              </View>
             )}
             <Text style={{marginLeft : 'auto', fontWeight : '500', fontSize : 13}}>N{newTotalPrice}</Text>
           </View>

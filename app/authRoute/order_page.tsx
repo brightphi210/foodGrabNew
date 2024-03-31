@@ -62,32 +62,61 @@ const orderPage = () => {
     const router = useRouter()
     const route = useRoute();
 
-    const { cuisines, singleShopData } : any = route.params;
+    const { cuisines } : any = route.params;
 
+    const [message, setMessage] = useState<any>('')
+    const [quantity, setQuantity] = useState(0)
     const [showModal2, setShowModal2] = useState<any>(false)
 
 
     const addToCart = async () => {
         try {
+          // 1. Fetch existing cart (or create an empty one if not found):
           const existingCart = await AsyncStorage.getItem('cuisines');
-          let updatedCart = [];
-    
-          if (existingCart !== null) {
+          let updatedCart;
+          if (existingCart) {
             updatedCart = JSON.parse(existingCart);
+          } else {  
+            updatedCart = [];
           }
-    
-          updatedCart.push({ cuisines });
+      
+          // 2. Check for existing cuisine with same ID:
+          const existingCuisineIndex = updatedCart.findIndex(
+            (cuisine : any) => cuisine._id === cuisines._id
+            
 
+          );
+      
+          // 3. Handle duplicate cuisine:
+          if (existingCuisineIndex !== -1) {
+            updatedCart[existingCuisineIndex].quantity++; // Increment quantity
+            console.log(`Cuisine ${cuisines.name} quantity increased to ${updatedCart[existingCuisineIndex].quantity}`);
+            setMessage(`${cuisines.name} quantity increased to ${updatedCart[existingCuisineIndex].quantity}`)
+            
+            
+          }
+          
+          else {
+            // 4. Add new cuisine with quantity 1:
+            updatedCart.push({ ...cuisines, quantity: 1 });
+            setMessage(`${cuisines.name} added (quantity 1)`)
+            console.log(`Cuisine ${cuisines.name} added with quantity 1`);
+          }
+      
+          // 5. Persist updated cart in AsyncStorage:
           await AsyncStorage.setItem('cuisines', JSON.stringify(updatedCart));
+          
 
           setShowModal2(true);
-
-          console.log(existingCart);
-          console.log(existingCart?.length)
         } catch (error) {
           console.error('Error adding item to cart:', error);
         }
-    };
+      };
+
+
+    //   console.log(cuisines)
+      
+      
 
 
 
@@ -161,9 +190,9 @@ const orderPage = () => {
                         <AntDesign name='minus' size={15}/>
                     </TouchableOpacity>
 
-                    <Text style={{fontSize : 20, padding : 0}}>0</Text>
+                    <Text style={{fontSize : 20, padding : 0}}>{quantity}</Text>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={addToCart}>
                         <AntDesign name='plus' size={15}/>
                     </TouchableOpacity>
                 </View>
@@ -183,7 +212,7 @@ const orderPage = () => {
         >
             <View style={styles.modalStyle2}>
                 <Image source={require('../../assets/images/succes2.png')} style={{width : 80, height : 80}}/>
-                <Text style={{fontFamily : 'Railway1', fontSize : 15, padding : 0}}>Product Added</Text>
+                <Text style={{fontFamily : 'Railway1', fontSize : 13, padding : 0}}>{message}</Text>
 
                 <View style={{display : 'flex', flexDirection : 'row', gap : 10, marginVertical : 10}}>
                     <TouchableOpacity onPress={()=>router.replace('/(protected)/carts')}

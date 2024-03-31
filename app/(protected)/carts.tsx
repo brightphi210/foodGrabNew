@@ -11,16 +11,18 @@ import { Ionicons } from '@expo/vector-icons';
 
 const cart = () => {
 
-      const [cartItems, setCartItems] = useState<any>([])
+  
+  const [isLoading, setIsLoading] = useState(false)
+  
+  const router = useRouter();  
 
-      const [isLoading, setIsLoading] = useState(false)
-
-      const router = useRouter();
+  const [cartItems, setCartItems] = useState<any>([])
 
     const getData = async () => {
         try {
           const jsonValue = await AsyncStorage.getItem('cuisines');
-          return setCartItems(jsonValue != null ? JSON.parse(jsonValue) : null);
+          const parsedData = jsonValue != null ? JSON.parse(jsonValue) : [];
+          return setCartItems(parsedData);
         } catch (e) {
           console.log(e)
         }
@@ -128,8 +130,8 @@ const cart = () => {
 
                 <View style={styles.cartRight}>
                   <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center', gap : 50}}>
-                    <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{cartItem.cuisines.name}</Text> 
-                    <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray', paddingLeft : 40}}>3 Items</Text>
+                    <Text style={{fontFamily : 'Railway2', fontSize : 15}}>{cartItem.name}</Text> 
+                    <Text style={{ marginLeft : 'auto', fontSize : 12, color : 'gray', paddingLeft : 40}}>{cartItem.quantity} Items</Text>
                   </View>
                   <Text style={{ fontFamily: 'Railway1', fontSize: 12, paddingVertical: 6, color: Colors.myGreen }}>Chiken Republic</Text>
                 </View>
@@ -149,7 +151,7 @@ const cart = () => {
                   <Text style={{fontFamily : 'Railway2', fontSize : 12}}>View Selection</Text>
                 </Link>
 
-                <TouchableOpacity onPress={deleteItemFromCart} style={{marginLeft : 'auto'}}>
+                <TouchableOpacity onPress={() => deleteItemFromCart(index)} style={{marginLeft : 'auto'}}>
                   <FontAwesome name='trash' size={15} color={Colors.myRed}  />
                 </TouchableOpacity>
               </View>
