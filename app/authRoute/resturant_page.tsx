@@ -184,7 +184,7 @@ const resturantPage = () => {
                       }}>
                           {eachCuisines.description}
                       </Text>
-                      <Text style={{fontFamily : 'Railway1', color : Colors.btnGreen}}>From N{eachCuisines.price}</Text>
+                      <Text style={{ color : Colors.btnGreen}}>From N{eachCuisines.price.toLocaleString()}</Text>
                       </View>
 
                   </View>

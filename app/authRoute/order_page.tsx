@@ -171,7 +171,7 @@ const orderPage = () => {
             </View>
 
             <TouchableOpacity style={styles.btnStyles} onPress={addToCart}>
-                <Text style={{color : 'white', fontSize : 13, fontWeight : 'bold'}}>Add N{cuisines.price}</Text>
+                <Text style={{color : 'white', fontSize : 13, fontWeight : 'bold'}}>Add N{cuisines.price.toLocaleString()}</Text>
             </TouchableOpacity>
         </View>
 

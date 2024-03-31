@@ -99,7 +99,7 @@ export default function TabLayout() {
               )}
 
               <Ionicons
-                size={focused ? 25 : 25}
+                size={focused ? 30 : 25}
                 style={{ marginBottom: -3, textAlign : 'center' }}
                 name="basket-outline"
                 color={focused ? Colors.btnGreen : 'gray'}
