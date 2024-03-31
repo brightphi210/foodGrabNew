@@ -13,7 +13,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function TabLayout() {
 
-  const [cartItems, setCartItems] = useState([])
+  const [cartItems, setCartItems] = useState<any>([])
 
   const getData = async () => {
       try {
@@ -45,7 +45,7 @@ export default function TabLayout() {
 
       tabBarStyle : {
         backgroundColor : 'white',
-        height : 60
+        height : 75
       }
     }}>
 
@@ -62,13 +62,14 @@ export default function TabLayout() {
           title: "",
           tabBarIcon: ({ focused }) => (
             <View>
-              {/* <AntDesign name='home' size={30}/> */}
+
               <AntDesign
                 size={focused ? 25 : 23}
                 style={{ marginBottom: -3, textAlign : 'center', }}
                 name="home"
                 color={focused ? Colors.btnGreen : 'gray'}
               />
+              <Text style={{fontFamily : 'Railway3', paddingTop : 5, color : 'gray', fontSize : 12}}>Home</Text>
             </View>
           ),
         }}
@@ -90,8 +91,8 @@ export default function TabLayout() {
           tabBarIcon: ({ focused }) => (
             <View style={{position : 'relative'}}>
 
-              {cartItems === null ? '' : (
-                  <FontAwesome name='circle' 
+              { cartItems === null || cartItems.length === 0 ? '' : (
+                <FontAwesome name='circle' 
                   size={6} color={'red'} 
                   style={{position : 'absolute', right : -5, top : 2,}}
                 />
@@ -103,6 +104,7 @@ export default function TabLayout() {
                 name="basket-outline"
                 color={focused ? Colors.btnGreen : 'gray'}
               />
+              <Text style={{fontFamily : 'Railway3', paddingTop : 5, color : 'gray', fontSize : 12}}>Carts</Text>
             </View>
           ),
         }}
@@ -127,6 +129,7 @@ export default function TabLayout() {
                 name="bag-outline"
                 color={focused ? Colors.btnGreen : 'gray'}
               />
+              <Text style={{fontFamily : 'Railway3', paddingTop : 5, color : 'gray', fontSize : 12}}>Orders</Text>
             </View>
           ),
         }}
@@ -152,6 +155,7 @@ export default function TabLayout() {
                 name="user-circle"
                 color={focused ? Colors.btnGreen : 'gray'}
               />
+              <Text style={{fontFamily : 'Railway3', paddingTop : 5, color : 'gray', fontSize : 12}}>Account</Text>
             </View>
           ),
         }}

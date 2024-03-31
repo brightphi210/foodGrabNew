@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const cart = () => {
 
-      const [cartItems, setCartItems] = useState([])
+      const [cartItems, setCartItems] = useState<any>([])
 
       const [isLoading, setIsLoading] = useState(false)
 
@@ -30,6 +30,21 @@ const cart = () => {
         getData();
     },[]);
 
+
+
+    const deleteItemFromCart = async (itemIndex : any) => {
+      try {
+          const updatedCartItems = [...cartItems];
+          
+          updatedCartItems.splice(itemIndex, 1);
+          
+          setCartItems(updatedCartItems);
+          
+          await AsyncStorage.setItem('cuisines', JSON.stringify(updatedCartItems));
+      } catch (e) {
+          console.log(e);
+      }
+  };
 
     console.log(cartItems)
 
@@ -52,23 +67,7 @@ const cart = () => {
       <View style={{display : 'flex', flexDirection : 'row', alignItems : 'center'}}>
         <Text style={{paddingLeft : 20, fontFamily : 'Railway2', paddingTop : 30, fontSize : 15}}>My Cart</Text>
 
-        {cartItems === null ? (
-          <View style={{
-            backgroundColor : Colors.myLightGray, 
-            marginLeft : 'auto', marginTop : 30, 
-            marginRight : 20, display : 'flex', flexDirection : 'column',
-            justifyContent : 'center',
-            alignItems : 'center',
-            paddingHorizontal : 8,
-            paddingVertical : 5,
-            borderRadius : 100,
-            paddingTop : 0
-
-          }}>
-            <Text style={{ fontFamily : 'Railway1',  fontSize : 15, }}>0</Text>
-          </View>
-          
-        ) : (
+        {cartItems !== null &&
           <View style={{
             backgroundColor : Colors.myLightGray, 
             marginLeft : 'auto', marginTop : 30, 
@@ -83,10 +82,10 @@ const cart = () => {
           }}>
             <Text style={{ fontFamily : 'Railway1',  fontSize : 15, }}>{cartItems.length}</Text>
           </View>
-        )}
+        }
       </View>
 
-      {cartItems === null ? (
+      {cartItems.length === 0 || cartItems === null ? (
 
         <View style={styles.container2}>
 
@@ -149,7 +148,10 @@ const cart = () => {
                 <Link href={"/authRoute/proceed_checkout"} asChild>
                   <Text style={{fontFamily : 'Railway2', fontSize : 12}}>View Selection</Text>
                 </Link>
-                <FontAwesome name='trash' size={15} color={Colors.myRed} style={{marginLeft : 'auto'}}/>
+
+                <TouchableOpacity onPress={deleteItemFromCart} style={{marginLeft : 'auto'}}>
+                  <FontAwesome name='trash' size={15} color={Colors.myRed}  />
+                </TouchableOpacity>
               </View>
             </View>
           ))}

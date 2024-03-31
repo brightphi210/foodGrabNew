@@ -12,8 +12,6 @@
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },
-
-    
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -24,7 +22,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.bright210.foodGrabNew"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +35,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "f1b5bdad-ec6d-446b-9834-a4b1eeacb563"
+      }
     }
   }
 }
