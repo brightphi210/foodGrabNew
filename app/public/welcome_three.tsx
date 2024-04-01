@@ -1,10 +1,25 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React,{ useState, useEffect } from 'react'
 import { StatusBar } from 'expo-status-bar';
 import Colors from '@/constants/Colors';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const welcome_three = () => {
+
+  const [hasSeenWelcomeScreen, setHasSeenWelcomeScreen] = useState(false)
+
+
+  const router = useRouter()
+
+  const setHasSeenScreen = async () => {
+      await AsyncStorage.setItem('welcomeScreen', JSON.stringify(true));
+      setHasSeenWelcomeScreen(true)
+      router.push('/login')
+
+  }
+
+
   return (
     <SafeAreaView style={{flex : 1, backgroundColor :'gray'}}>
         <StatusBar style='dark'/>
@@ -13,17 +28,17 @@ const welcome_three = () => {
 
         {/* ========= Text =============== */}
         
-        <Link href={'/register'} asChild>        
-          <TouchableOpacity style={styles.btnStyles1}>
+        {/* <Link href={'/register'} asChild>         */}
+          <TouchableOpacity style={styles.btnStyles1} onPress={()=>router.replace('/register')}>
               <Text style={{fontSize : 18, color : 'white', fontFamily : 'Railway2'}}>Get Started</Text>
             </TouchableOpacity>
-        </Link>
+        {/* </Link> */}
 
-        <Link href={'/login'} asChild>        
-          <TouchableOpacity style={styles.btnStyles}>
+        {/* <Link href={'/login'} asChild >         */}
+          <TouchableOpacity style={styles.btnStyles} onPress={setHasSeenScreen}>
               <Text style={{fontSize : 18, color : Colors.myGreen, fontFamily : 'Railway2'}}>Login</Text>
             </TouchableOpacity>
-        </Link>
+        {/* </Link> */}
       </View>
     </SafeAreaView>
   )

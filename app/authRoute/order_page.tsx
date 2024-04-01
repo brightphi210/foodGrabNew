@@ -65,13 +65,11 @@ const orderPage = () => {
     const { cuisines } : any = route.params;
 
     const [message, setMessage] = useState<any>('')
-    const [quantity, setQuantity] = useState(0)
     const [showModal2, setShowModal2] = useState<any>(false)
 
 
     const addToCart = async () => {
         try {
-          // 1. Fetch existing cart (or create an empty one if not found):
           const existingCart = await AsyncStorage.getItem('cuisines');
           let updatedCart;
           if (existingCart) {
@@ -89,10 +87,10 @@ const orderPage = () => {
       
           // 3. Handle duplicate cuisine:
           if (existingCuisineIndex !== -1) {
-            updatedCart[existingCuisineIndex].quantity++; // Increment quantity
+            updatedCart[existingCuisineIndex].quantity++;
             console.log(`Cuisine ${cuisines.name} quantity increased to ${updatedCart[existingCuisineIndex].quantity}`);
             setMessage(`${cuisines.name} quantity increased to ${updatedCart[existingCuisineIndex].quantity}`)
-            
+            setQuantity(updatedCart[existingCuisineIndex].quantity)
             
           }
           
@@ -111,10 +109,76 @@ const orderPage = () => {
         } catch (error) {
           console.error('Error adding item to cart:', error);
         }
+    };
+
+
+    const removeFromCart = async () => {
+        try {
+          const existingCart = await AsyncStorage.getItem('cuisines');
+          let updatedCart;
+          if (existingCart) {
+            updatedCart = JSON.parse(existingCart);
+          } else {  
+            updatedCart = [];
+          }
+      
+          // 2. Check for existing cuisine with same ID:
+          const existingCuisineIndex = updatedCart.findIndex(
+            (cuisine : any) => cuisine._id === cuisines._id
+          );
+      
+          // 3. Handle duplicate cuisine:
+          if (existingCuisineIndex !== -1) {
+            updatedCart[existingCuisineIndex].quantity--;
+            console.log(`Cuisine ${cuisines.name} quantity reduce to ${updatedCart[existingCuisineIndex].quantity}`);
+            setMessage(`${cuisines.name} quantity reduce to ${updatedCart[existingCuisineIndex].quantity}`)
+            setQuantity(updatedCart[existingCuisineIndex].quantity)
+            
+            
+          }
+          
+          // 5. Persist updated cart in AsyncStorage:
+          await AsyncStorage.setItem('cuisines', JSON.stringify(updatedCart));
+          
+
+          setShowModal2(true);
+        } catch (error) {
+          console.error('Error adding item to cart:', error);
+        }
+    };
+
+    const [quantity, setQuantity] = useState<any>(0); // State to track quantity of selected cuisine
+
+
+    const getQuantity = async () => {
+        try {
+          const cuisineQunatity = await AsyncStorage.getItem('cuisines');
+          let myQuantity
+          if (cuisineQunatity) {
+            myQuantity = JSON.parse(cuisineQunatity)
+          }
+
+
+          const existingCuisineIndex = myQuantity.findIndex(
+            (cuisine : any) => cuisine._id === cuisines._id
+          );
+
+
+          if(existingCuisineIndex !== -1){
+            setQuantity(myQuantity[existingCuisineIndex].quantity);
+          }
+        } catch (e) {
+          console.error('Error retrieving authentication data:', e);
+        }
       };
+    
+      useEffect(() => {
+        getQuantity();
+      }, [quantity]);
 
 
-    //   console.log(cuisines)
+
+      console.log(quantity)
       
       
 
@@ -186,7 +250,7 @@ const orderPage = () => {
                         paddingVertical : 3
                     }}>
 
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={removeFromCart}>
                         <AntDesign name='minus' size={15}/>
                     </TouchableOpacity>
 

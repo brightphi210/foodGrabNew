@@ -8,16 +8,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const welcome_one = () => {
 
-    const [hasSeenWelcomeScreen, setHasSeenWelcomeScreen] = useState(false)
 
-    const router = useRouter()
 
-    const setHasSeenScreen = async () => {
-        await AsyncStorage.setItem('welcomeScreen', JSON.stringify(true));
-        setHasSeenWelcomeScreen(true)
-        router.push('/public/welcome_two')
-
-    }
     
 
   return (
@@ -38,7 +30,7 @@ const welcome_one = () => {
 
         
         <Link href={'/public/welcome_two'} asChild>        
-          <TouchableOpacity style={styles.btnStyles} onPress={setHasSeenScreen}>
+          <TouchableOpacity style={styles.btnStyles} >
               <Text style={{fontSize : 18, color : 'white', fontFamily : 'Railway2'}}>Next</Text>
             </TouchableOpacity>
         </Link>
